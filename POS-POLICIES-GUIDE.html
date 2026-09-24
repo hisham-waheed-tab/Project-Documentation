@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل سياسات نقاط البيع — Tab-MS POS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f6fb;
+    --card: #ffffff;
+    --ink: #1c2233;
+    --muted: #667085;
+    --line: #e4e7ef;
+    --brand: #c8102e;
+    --brand-dark: #8e0b20;
+    --deny: #e5484d;
+    --pin: #f59e0b;
+    --allow: #16a34a;
+    --info: #2563eb;
+    --purple: #7c3aed;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.75;
+  }
+  code, .mono { font-family: 'Cascadia Code', Consolas, monospace; direction: ltr; unicode-bidi: embed; }
+
+  /* ── Hero ───────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, #1c2233 0%, #3b1020 55%, var(--brand) 100%);
+    color: #fff;
+    padding: 56px 24px 96px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; inset: auto -120px -160px auto;
+    width: 420px; height: 420px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,.18), transparent 70%);
+  }
+  .hero .wrap { max-width: 1180px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero h1 { font-size: 40px; margin: 0 0 8px; font-weight: 800; }
+  .hero p { margin: 0; opacity: .85; font-size: 18px; max-width: 760px; }
+  .stats { display: flex; gap: 14px; margin-top: 28px; flex-wrap: wrap; }
+  .stat {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    backdrop-filter: blur(6px);
+    border-radius: 14px; padding: 12px 18px; min-width: 150px;
+  }
+  .stat b { display: block; font-size: 28px; font-weight: 800; }
+  .stat span { font-size: 13px; opacity: .85; }
+
+  main { max-width: 1180px; margin: -64px auto 64px; padding: 0 20px; position: relative; z-index: 2; }
+  section.card {
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(28,34,51,.07);
+    padding: 28px; margin-bottom: 22px; border: 1px solid var(--line);
+  }
+  h2 { margin: 0 0 14px; font-size: 24px; display: flex; align-items: center; gap: 10px; }
+  h2 .ic {
+    width: 38px; height: 38px; border-radius: 11px; display: inline-grid; place-items: center;
+    background: #fdecef; color: var(--brand); font-size: 20px;
+  }
+  h3 { margin: 18px 0 8px; font-size: 18px; }
+  .muted { color: var(--muted); }
+
+  /* ── How it resolves ────────────────── */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 860px) { .grid2, .grid3 { grid-template-columns: 1fr; } .hero h1 { font-size: 30px; } }
+  .chain { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+  .node {
+    padding: 8px 14px; border-radius: 999px; font-weight: 700; font-size: 14px;
+    border: 2px solid; background: #fff;
+  }
+  .arrow { color: var(--muted); font-weight: 800; }
+  .n-user { border-color: var(--purple); color: var(--purple); }
+  .n-role { border-color: #a78bfa; color: #6d28d9; }
+  .n-term { border-color: var(--info); color: var(--info); }
+  .n-branch { border-color: #60a5fa; color: #1d4ed8; }
+  .n-tenant { border-color: #94a3b8; color: #334155; }
+  .n-def { border-color: #cbd5e1; color: #64748b; border-style: dashed; }
+  .box {
+    border-radius: 14px; padding: 16px 18px; border: 1px solid var(--line); background: #fafbff;
+  }
+  .box.restrict { border-color: #fecaca; background: linear-gradient(180deg, #fff5f5, #fff); }
+  .box.override { border-color: #bfdbfe; background: linear-gradient(180deg, #f3f8ff, #fff); }
+  .box h4 { margin: 0 0 6px; font-size: 17px; }
+  .example {
+    margin-top: 10px; padding: 10px 12px; border-radius: 10px; background: #fff;
+    border: 1px dashed var(--line); font-size: 14px;
+  }
+
+  /* ── Refresh timeline ───────────────── */
+  .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 860px) { .timeline { grid-template-columns: 1fr 1fr; } }
+  .tl {
+    border-radius: 14px; padding: 16px; color: #fff; position: relative; overflow: hidden;
+  }
+  .tl b { display: block; font-size: 16px; margin-bottom: 4px; }
+  .tl span { font-size: 13px; opacity: .92; }
+  .tl .big { position: absolute; left: 10px; bottom: -6px; font-size: 44px; opacity: .18; font-weight: 800; }
+  .tl1 { background: linear-gradient(135deg, #2563eb, #1e40af); }
+  .tl2 { background: linear-gradient(135deg, #16a34a, #166534); }
+  .tl3 { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+  .tl4 { background: linear-gradient(135deg, #f59e0b, #b45309); }
+
+  /* ── Status legend ──────────────────── */
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 700; white-space: nowrap;
+  }
+  .badge::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .s-both    { background: #dcfce7; color: #15803d; }
+  .s-desktop { background: #dbeafe; color: #1d4ed8; }
+  .s-server  { background: #ede9fe; color: #6d28d9; }
+  .s-data    { background: #fef3c7; color: #b45309; }
+  .s-planned { background: #f1f5f9; color: #64748b; }
+  .m-R { background: #fee2e2; color: #b91c1c; }
+  .m-O { background: #e0f2fe; color: #0369a1; }
+  .m-R::before, .m-O::before { display: none; }
+
+  /* ── Toolbar ────────────────────────── */
+  .toolbar {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(244,246,251,.92); backdrop-filter: blur(8px);
+    padding: 12px 0; margin-bottom: 8px;
+  }
+  .toolbar .inner {
+    background: #fff; border: 1px solid var(--line); border-radius: 14px;
+    padding: 10px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+    box-shadow: 0 4px 14px rgba(28,34,51,.05);
+  }
+  .toolbar input {
+    flex: 1; min-width: 220px; border: 1px solid var(--line); border-radius: 10px;
+    padding: 10px 14px; font: inherit; font-size: 15px; outline: none;
+  }
+  .toolbar input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px #fde2e6; }
+  .chip-btn {
+    border: 1px solid var(--line); background: #fff; border-radius: 999px;
+    padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer; font-weight: 700; color: var(--muted);
+  }
+  .chip-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .catnav { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .catnav a {
+    text-decoration: none; font-size: 13px; font-weight: 700; padding: 5px 11px; border-radius: 999px;
+    color: #fff;
+  }
+
+  /* ── Category blocks ────────────────── */
+  .cat { margin-bottom: 26px; scroll-margin-top: 200px; }
+  .cat-head {
+    display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-radius: 16px 16px 0 0; color: #fff;
+  }
+  .cat-head .emoji { font-size: 26px; }
+  .cat-head h2 { margin: 0; font-size: 21px; color: #fff; }
+  .cat-head small { opacity: .85; margin-inline-start: auto; font-weight: 700; }
+  .cat-body {
+    background: #fff; border: 1px solid var(--line); border-top: 0; border-radius: 0 0 16px 16px;
+    padding: 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px;
+  }
+  .pol {
+    border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px 12px;
+    position: relative; background: #fff; transition: transform .15s, box-shadow .15s;
+    border-top: 4px solid var(--c, #94a3b8);
+  }
+  .pol:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(28,34,51,.08); }
+  .pol .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .pol .name { font-weight: 800; font-size: 16.5px; }
+  .pol .key { font-size: 12px; color: var(--muted); margin-top: 2px; display: block; text-align: right; }
+  .pol .meta { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 8px; align-items: center; }
+  .tag {
+    font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: #f1f5f9; color: #475569;
+  }
+  .values { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0 10px; align-items: center; }
+  .val {
+    font-size: 12.5px; font-weight: 700; padding: 3px 10px; border-radius: 8px;
+    border: 1.5px solid transparent; direction: ltr;
+  }
+  .val.def { outline: 2px solid var(--ink); outline-offset: 1px; }
+  .val.def::after { content: ' ★'; }
+  .scale { font-size: 11px; color: var(--muted); }
+  .effect { font-size: 14.5px; color: #344054; }
+  .effect ul { margin: 4px 0 0; padding-inline-start: 18px; }
+  .effect li { margin: 2px 0; }
+  .effect b { color: var(--ink); }
+  .hidden { display: none !important; }
+  .empty { text-align: center; padding: 40px; color: var(--muted); display: none; }
+
+  /* ── Glossary ───────────────────────── */
+  .gloss { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+  .g {
+    border-radius: 12px; padding: 12px 14px; border: 1px solid var(--line); background: #fff;
+    border-inline-start: 5px solid var(--gc);
+  }
+  .g code { font-weight: 800; color: var(--gc); font-size: 15px; }
+  .g div { font-size: 14px; color: #475467; margin-top: 2px; }
+
+  table.simple { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  table.simple th, table.simple td { padding: 9px 12px; border-bottom: 1px solid var(--line); text-align: right; }
+  table.simple th { background: #f8fafc; font-weight: 800; }
+  table.simple tr:hover td { background: #fcfcff; }
+
+  .note {
+    border-radius: 12px; padding: 12px 16px; margin-top: 12px; font-size: 14.5px;
+    background: #fffbeb; border: 1px solid #fde68a; color: #92400e;
+  }
+  .note.blue { background: #eff6ff; border-color: #bfdbfe; color: #1e3a8a; }
+  footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px; }
+
+  @media print {
+    .toolbar, .catnav { display: none; }
+    .hero { padding: 24px; }
+    main { margin-top: 0; }
+    .pol { break-inside: avoid; }
+    .pol:hover { transform: none; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>🛡️ دليل سياسات نقاط البيع</h1>
+    <p>كل سياسة: ماذا تعني، ما القيم المتاحة، القيمة الافتراضية، وكيف تؤثر على برنامج الكاشير (Desktop) والخادم. تُدار السياسات من شاشة <b>السياسات</b> في الويب.</p>
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ═════════ How values resolve ═════════ -->
+  <section class="card">
+    <h2><span class="ic">🧭</span>كيف تُحسب القيمة الفعّالة؟</h2>
+    <p class="muted">تُضبط السياسة على خمس جهات. الخادم يجمع قيمتين: <b>قيمة المكان</b> و<b>قيمة الشخص</b>، ثم يختار بينهما حسب «طريقة الحسم» الخاصة بكل سياسة.</p>
+
+    <div class="grid2">
+      <div class="box">
+        <h4>📍 سلسلة المكان — الأخص يغلب</h4>
+        <div class="chain">
+          <span class="node n-term">نقطة البيع</span><span class="arrow">←</span>
+          <span class="node n-branch">الفرع</span><span class="arrow">←</span>
+          <span class="node n-tenant">الشركة</span><span class="arrow">←</span>
+          <span class="node n-def">الافتراضي</span>
+        </div>
+        <div class="muted" style="font-size:14px">تُؤخذ أول قيمة موجودة من اليمين. لو لم تُخصص لأي جهة تُستخدم القيمة الافتراضية ★.</div>
+      </div>
+      <div class="box">
+        <h4>👤 سلسلة الشخص</h4>
+        <div class="chain">
+          <span class="node n-user">المستخدم</span><span class="arrow">←</span>
+          <span class="node n-role">الأدوار</span>
+        </div>
+        <div class="muted" style="font-size:14px">قيمة المستخدم تغلب. إن لم توجد يُؤخذ <b>أكثر الأدوار سماحًا</b> (صلاحيات الأدوار تراكمية).</div>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-top:16px">
+      <div class="box restrict">
+        <h4><span class="badge m-R">تقييد Restrict</span>&nbsp; الأكثر تقييدًا يغلب</h4>
+        <div style="font-size:14.5px">يُختار الأشد بين قيمة المكان وقيمة الشخص. مناسبة لحدود الخصم والصلاحيات: لا يستطيع مستخدم أن يتجاوز ما يسمح به الفرع.</div>
+        <div class="example">مثال: الفرع حدد أقصى خصم <b>10%</b> والمستخدم مخصص له <b>20%</b> ← الفعّال <b>10%</b>.</div>
+      </div>
+      <div class="box override">
+        <h4><span class="badge m-O">استبدال Override</span>&nbsp; الشخص يغلب المكان</h4>
+        <div style="font-size:14.5px">إن وُجدت قيمة للشخص تُستخدم كما هي، وإلا قيمة المكان. مناسبة للتفضيلات والإعدادات مثل الطباعة والضريبة.</div>
+        <div class="example">مثال: الفرع <b>طباعة تلقائية = نعم</b> والمستخدم <b>لا</b> ← الفعّال <b>لا</b>.</div>
+      </div>
+    </div>
+    <div class="note blue">القيم مرتبة داخل كل سياسة من <b style="color:var(--deny)">الأشد</b> إلى <b style="color:var(--allow)">الأكثر سماحًا</b> — وهذا الترتيب هو ما يستخدمه وضع «تقييد». القيم غير الصالحة تُتجاهل حتى لا يتعطل الكاشير بسبب إعداد خاطئ.</div>
+  </section>
+
+  <!-- ═════════ Refresh ═════════ -->
+  <section class="card">
+    <h2><span class="ic">🔄</span>متى يرى الكاشير تعديلك؟ — بدون إعادة فتح البرنامج</h2>
+    <div class="timeline">
+      <div class="tl tl1"><b>فتح الوردية</b><span>أو تغيير الوردية وعند عودة الاتصال</span><div class="big">1</div></div>
+      <div class="tl tl2"><b>كل دقيقتين</b><span>تلقائيًا طالما الجهاز متصل بالخادم</span><div class="big">2</div></div>
+      <div class="tl tl3"><b>عند الرجوع للنافذة</b><span>حين يعود الكاشير لبرنامج نقطة البيع</span><div class="big">3</div></div>
+      <div class="tl tl4"><b>يدويًا</b><span>أدوات الكاشير ← تحديث السياسات</span><div class="big">4</div></div>
+    </div>
+    <div class="note">بدون اتصال يعمل الجهاز بآخر سياسات محفوظة محليًا. زر «تحديث السياسات» يُظهر شارة <b>محفوظة</b> أو <b>افتراضية</b> إذا لم تُحمّل من الخادم.</div>
+  </section>
+
+  <!-- ═════════ Legend ═════════ -->
+  <section class="card">
+    <h2><span class="ic">🎨</span>دلالة الألوان</h2>
+    <div class="grid3">
+      <div><span class="badge s-both">الجهاز + الخادم</span><div class="muted" style="font-size:14px;margin-top:6px">يطبقها الكاشير، ويعيد الخادم فحصها عند رفع الفاتورة ويسجل «تعارض» عند المخالفة.</div></div>
+      <div><span class="badge s-desktop">مطبقة على الجهاز</span><div class="muted" style="font-size:14px;margin-top:6px">تؤثر مباشرة على شاشات الكاشير.</div></div>
+      <div><span class="badge s-server">الخادم فقط</span><div class="muted" style="font-size:14px;margin-top:6px">تُفحص عند الحفظ على الخادم.</div></div>
+      <div><span class="badge s-data">بانتظار بيانات</span><div class="muted" style="font-size:14px;margin-top:6px">مربوطة بالكود لكن لا أثر لها حتى تتوفر البيانات (رصيد الأصناف).</div></div>
+      <div><span class="badge s-planned">غير مطبقة بعد</span><div class="muted" style="font-size:14px;margin-top:6px">معرفة ويمكن ضبطها، لكن البرنامج لا يقرأها حاليًا.</div></div>
+      <div>
+        <span class="val" style="background:#fee2e2;color:#b91c1c">Deny</span>
+        <span class="val" style="background:#fef3c7;color:#b45309">ManagerPin</span>
+        <span class="val" style="background:#dcfce7;color:#15803d">Allow</span>
+        <div class="muted" style="font-size:14px;margin-top:6px">لون القيمة من الأشد (أحمر) إلى الأسمح (أخضر). ★ = الافتراضي.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ Toolbar ═════════ -->
+  <div class="toolbar">
+    <div class="inner">
+      <input id="q" type="search" placeholder="🔎 ابحث باسم السياسة أو المفتاح أو القيمة… (مثال: خصم، PRINT، ManagerPin)">
+      <button class="chip-btn active" data-status="all">الكل</button>
+      <button class="chip-btn" data-status="both">الجهاز + الخادم</button>
+      <button class="chip-btn" data-status="desktop">الجهاز</button>
+      <button class="chip-btn" data-status="server">الخادم</button>
+      <button class="chip-btn" data-status="data">بانتظار بيانات</button>
+      <button class="chip-btn" data-status="planned">غير مطبقة</button>
+    </div>
+    <div class="catnav" id="catnav"></div>
+  </div>
+
+  <div id="catalog"></div>
+  <div class="empty" id="empty">لا توجد سياسات مطابقة للبحث.</div>
+
+  <!-- ═════════ Glossary ═════════ -->
+  <section class="card">
+    <h2><span class="ic">📖</span>معاني القيم المتكررة</h2>
+    <div class="gloss">
+      <div class="g" style="--gc:#e5484d"><code>Deny</code><div>ممنوع تمامًا — يظهر للكاشير رسالة «غير مسموح حسب السياسة».</div></div>
+      <div class="g" style="--gc:#f59e0b"><code>ManagerPin</code><div>مسموح بعد موافقة مشرف: يختار المشرف ويدخل رمز PIN (يعمل أيضًا بدون اتصال إن سُمح).</div></div>
+      <div class="g" style="--gc:#16a34a"><code>Allow</code><div>مسموح بدون قيود.</div></div>
+      <div class="g" style="--gc:#e5484d"><code>Block</code><div>يمنع العملية ويعرض السبب.</div></div>
+      <div class="g" style="--gc:#f59e0b"><code>Warn</code><div>يسمح مع تنبيه للكاشير.</div></div>
+      <div class="g" style="--gc:#16a34a"><code>AllowNegative</code><div>يسمح حتى لو أصبح الرصيد سالبًا.</div></div>
+      <div class="g" style="--gc:#2563eb"><code>PerMethod</code><div>حسب إعداد وسيلة الدفع نفسها.</div></div>
+      <div class="g" style="--gc:#7c3aed"><code>DeviceOnly / AnyLocal</code><div>فواتير هذا الجهاز فقط / أي فاتورة محفوظة محليًا.</div></div>
+      <div class="g" style="--gc:#0891b2"><code>true / false</code><div>نعم / لا.</div></div>
+    </div>
+  </section>
+
+  <!-- ═════════ Approvals ═════════ -->
+  <section class="card">
+    <h2><span class="ic">✍️</span>أنواع موافقات المشرف</h2>
+    <p class="muted">كل موافقة تُسجل في سجل الموافقات (مع المشرف والكاشير والمبلغ). بدون اتصال تُحفظ على الجهاز وتُرفع عند عودة الاتصال.</p>
+    <table class="simple">
+      <thead><tr><th>الرقم</th><th>النوع</th><th>متى تُطلب</th><th>السياسة</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><code>LineDiscount</code></td><td>خصم صنف يتجاوز الحد</td><td><code>MAX_LINE_DISCOUNT_PERCENT</code></td></tr>
+        <tr><td>2</td><td><code>InvoiceDiscount</code></td><td>خصم فاتورة يتجاوز الحد</td><td><code>MAX_INVOICE_DISCOUNT_PERCENT</code></td></tr>
+        <tr><td>3</td><td><code>PriceOverride</code></td><td>محجوز لتعديل السعر</td><td>—</td></tr>
+        <tr><td>4</td><td><code>NegativeStock</code></td><td>محجوز للرصيد السالب</td><td>—</td></tr>
+        <tr><td>5</td><td><code>ReturnOverride</code></td><td>مرتجع يتجاوز المبلغ أو المدة</td><td><code>RETURN_APPROVAL_AMOUNT</code></td></tr>
+        <tr><td>6</td><td><code>CashDifference</code></td><td>فرق خزنة عند إغلاق الوردية</td><td><code>CASH_VARIANCE_APPROVAL_AMOUNT</code></td></tr>
+        <tr><td>7</td><td><code>VoidSale</code></td><td>إلغاء فاتورة</td><td><code>INVOICE_CANCEL_MODE</code></td></tr>
+        <tr><td>8</td><td><code>DeleteHeldSale</code></td><td>حذف فاتورة معلقة</td><td><code>INVOICE_CANCEL_MODE</code></td></tr>
+        <tr><td>9</td><td><code>ReprintReceipt</code></td><td>إعادة طباعة إيصال</td><td><code>REPRINT_MODE</code></td></tr>
+        <tr><td>10</td><td><code>CashOut</code></td><td>سحب / توريد نقدي</td><td><code>CASH_MOVEMENT_MODE</code></td></tr>
+        <tr><td>11</td><td><code>LineDelete</code></td><td>حذف صنف من السلة</td><td><code>LINE_DELETE_MODE</code></td></tr>
+        <tr><td>12</td><td><code>LineEdit</code></td><td>تقليل كمية صنف</td><td><code>LINE_EDIT_MODE</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<footer>Tab-MS POS — المرجع في الكود: <code>PosPolicyCatalog.cs</code> (الخادم) و<code>src/offline/policies.ts</code> (الديسكتوب)</footer>
+
+<script>
+/* [key, arabicName, type, default, mode R|O, allowed (restrictive→permissive) | null, status, effectHtml] */
+const CATEGORIES = [
+  { id: 'Offline', name: 'العمل بدون اتصال', emoji: '📡', color: '#475569', grad: 'linear-gradient(135deg,#334155,#64748b)', items: [
+    ['ALLOW_OFFLINE_SALE','السماح بالبيع بدون إنترنت','Boolean','true','R','false,true','both',
+      '<b>false</b>: زر إتمام الدفع يرفض البيع أثناء انقطاع الاتصال. يُشترط أيضًا أن تسمح نقطة البيع نفسها بالعمل Offline.<br>الخادم يسجل تعارضًا لأي فاتورة Offline تصله والسياسة false.'],
+    ['OFFLINE_MAX_HOURS','أقصى مدة عمل Offline (ساعات)','Integer','24','R',null,'both',
+      'بعد مرور هذه الساعات منذ آخر اتصال يُمنع البيع حتى يعود الاتصال وتتم المزامنة. الخادم يسجل تعارضًا لو رُفعت الفاتورة بعد المدة.'],
+    ['OFFLINE_RETURN_MODE','المرتجع أثناء Offline','String','DeviceOnly','R','Deny,DeviceOnly,AnyLocal','both',
+      '<ul><li><b>Deny</b>: لا مرتجع بدون اتصال.</li><li><b>DeviceOnly</b>: مرتجع فواتير هذا الجهاز فقط.</li><li><b>AnyLocal</b>: أي فاتورة محفوظة محليًا.</li></ul>'],
+    ['OFFLINE_EXCHANGE_MODE','الاستبدال أثناء Offline','String','Deny','R','Deny,IfOriginalLocal','desktop',
+      '<b>Deny</b>: الاستبدال يحتاج اتصال. <b>IfOriginalLocal</b>: مسموح إن كانت الفاتورة الأصلية محفوظة على الجهاز.'],
+    ['OFFLINE_MAX_DISCOUNT_PERCENT','أقصى خصم أثناء Offline %','Decimal','5','R',null,'both',
+      'سقف إضافي للخصم أثناء الانقطاع: يُطبق الأقل بينه وبين حد خصم الصنف وحد خصم الفاتورة.'],
+    ['OFFLINE_CREDIT_SALE','البيع الآجل أثناء Offline','Boolean','false','R','false,true','planned',
+      'مخصصة للسماح بالبيع الآجل بدون اتصال — البيع الآجل غير متاح في الديسكتوب حاليًا.'],
+    ['OFFLINE_CARD_PAYMENT','الدفع بالبطاقة أثناء Offline','String','PerMethod','R','Deny,PerMethod','desktop',
+      '<b>Deny</b>: البطاقة مخفية بدون اتصال. <b>PerMethod</b>: حسب إعداد وسيلة الدفع. عمليات البطاقة Offline تُسجل «بانتظار المطابقة».'],
+    ['OFFLINE_SUPERVISOR_APPROVAL','اعتماد المشرف برمز PIN بدون اتصال','Boolean','true','R','false,true','desktop',
+      '<b>true</b>: يتحقق الجهاز من PIN المشرف محليًا (مشفّر) وتُرفع الموافقة لاحقًا. <b>false</b>: أي موافقة تحتاج اتصالًا بالخادم.'],
+    ['OFFLINE_STOCK_MODE','الرصيد أثناء Offline (آخر رصيد متزامن)','String','Warn','R','Block,Warn,AllowNegative','data',
+      'مثل «عند عدم كفاية الرصيد» لكن أثناء الانقطاع. <b>لا أثر حاليًا</b>: الجهاز لا يحمّل رصيد الأصناف بعد.'],
+  ]},
+  { id: 'Stock', name: 'المخزون والرصيد', emoji: '📦', grad: 'linear-gradient(135deg,#b45309,#f59e0b)', items: [
+    ['STOCK_INSUFFICIENT_MODE','عند عدم كفاية الرصيد','String','Warn','R','Block,Warn,AllowNegative','data',
+      'عند إضافة صنف أو زيادة كميته فوق المتاح: <b>Block</b> يرفض، <b>Warn</b> ينبه، <b>AllowNegative</b> يسمح. <b>لا أثر حاليًا</b> لعدم توفر الرصيد على الجهاز.'],
+    ['STOCK_CHECK_SCOPE','نطاق فحص الرصيد','String','Store','O','Store,BranchStores,None','data',
+      '<b>None</b> يلغي فحص الرصيد تمامًا. <b>Store</b>: مخزن نقطة البيع. <b>BranchStores</b>: كل مخازن الفرع.'],
+    ['INACTIVE_ITEM_MODE','الصنف الموقوف','String','Block','R','Block,Warn','planned',
+      'التعامل مع صنف موقوف. حاليًا الكتالوج يستبعد الأصناف الموقوفة أصلًا فلا تظهر للكاشير.'],
+    ['STOCK_RESERVE_MODE','توقيت حجز/خصم الكمية','String','OnSave','O','OnAddLine,OnPayment,OnSave','planned',
+      'متى تُحجز الكمية: عند إضافة السطر / عند الدفع / عند الحفظ.'],
+    ['STORE_SELECTION_MODE','اختيار المخزن','String','Fixed','R','Fixed,UserSelect','planned',
+      'حاليًا المخزن ثابت من إعداد نقطة البيع. <b>UserSelect</b> مخصصة للسماح للكاشير بالاختيار.'],
+  ]},
+  { id: 'Pricing', name: 'التسعير', emoji: '🏷️', grad: 'linear-gradient(135deg,#0e7490,#06b6d4)', items: [
+    ['PRICE_CHANGE_MODE','تعديل السعر يدويًا','String','Deny','R','Deny,AllowAboveMin,Allow','desktop',
+      'زر <b>«السعر»</b> على سطر الصنف:<ul><li><b>Deny</b>: الزر مخفي.</li><li><b>AllowAboveMin</b>: لا يقل عن سعر الصنف الأصلي.</li><li><b>Allow</b>: تعديل حر.</li></ul>تعديل السعر يلغي خصم السطر.'],
+    ['ALLOW_STACKED_DISCOUNTS','جمع أكثر من خصم','Boolean','false','R','false,true','planned','السماح بجمع خصم الصنف + خصم الفاتورة + العروض.'],
+    ['BELOW_COST_SALE_MODE','البيع أقل من التكلفة','String','Block','R','Block,ManagerPin,Warn','planned','التعامل مع بيع صنف بسعر أقل من تكلفته.'],
+    ['PRICE_LIST_MODE','اختيار قائمة الأسعار','String','Auto','R','Auto,UserSelect','planned','تلقائي حسب المخزن/الفرع، أو يختار الكاشير.'],
+    ['PROMOTION_MODE','تطبيق العروض','String','AutoBestOffer','O','None,UserSelect,AutoBestOffer','planned','بدون عروض / يختار الكاشير / أفضل عرض تلقائيًا.'],
+  ]},
+  { id: 'Discount', name: 'الخصومات', emoji: '💸', grad: 'linear-gradient(135deg,#15803d,#22c55e)', items: [
+    ['MAX_LINE_DISCOUNT_PERCENT','أقصى خصم على السطر %','Decimal','10','R',null,'both',
+      'أي خصم صنف فوق هذه النسبة يحتاج موافقة مشرف (أو يُرفض حسب «تجاوز حد الخصم»). الخادم يسجل تعارضًا للخصم الزائد بدون موافقة.'],
+    ['MAX_INVOICE_DISCOUNT_PERCENT','أقصى خصم على الفاتورة %','Decimal','10','R',null,'both',
+      'تُحسب النسبة من الإجمالي بعد خصم الأصناف. التجاوز يحتاج موافقة مشرف؛ الخادم يقبله فقط مع معتمد مؤهل.'],
+    ['DISCOUNT_OVER_LIMIT_MODE','تجاوز حد الخصم','String','ManagerPin','R','Deny,ManagerPin','desktop',
+      '<b>Deny</b>: رفض أي خصم فوق الحد. <b>ManagerPin</b>: يُقبل ويظهر «يحتاج موافقة مشرف» ويمنع الدفع حتى الاعتماد.'],
+    ['ALLOW_LINE_DISCOUNT','السماح بخصم على الصنف','Boolean','true','R','false,true','desktop','<b>false</b>: زر «خصم» يختفي من سطر الصنف.'],
+    ['ALLOW_INVOICE_DISCOUNT','السماح بخصم على الفاتورة','Boolean','true','R','false,true','desktop','<b>false</b>: زر «خصم على الفاتورة» يختفي من ملخص الفاتورة.'],
+  ]},
+  { id: 'Customer', name: 'العملاء', emoji: '👥', grad: 'linear-gradient(135deg,#6d28d9,#a78bfa)', items: [
+    ['CUSTOMER_REQUIRED','العميل إلزامي','Boolean','false','O',null,'desktop','<b>true</b>: يمنع إتمام الدفع بدون اختيار عميل، ويظهر الزر «اختيار عميل (إلزامي)».'],
+    ['CUSTOMER_CREATE_MODE','إنشاء عميل من POS','String','Short','R','Deny,Short,Full','planned','منع / نموذج مختصر / نموذج كامل.'],
+    ['CUSTOMER_PHONE_DUPLICATE_MODE','تكرار رقم الجوال','String','Warn','O','Block,Warn,Allow','planned','عند إنشاء عميل برقم جوال مستخدم.'],
+    ['USE_DEFAULT_CASH_CUSTOMER','استخدام العميل النقدي الافتراضي','Boolean','true','O',null,'planned','ربط الفواتير بدون عميل بالعميل النقدي WALK-IN.'],
+    ['CUSTOMER_PHONE_REQUIRED','رقم الجوال إلزامي للعميل','Boolean','false','O',null,'planned','إلزام إدخال الجوال عند إنشاء عميل.'],
+  ]},
+  { id: 'Payment', name: 'الدفع', emoji: '💳', grad: 'linear-gradient(135deg,#1d4ed8,#60a5fa)', items: [
+    ['ALLOW_SPLIT_PAYMENT','السماح بتعدد وسائل الدفع','Boolean','true','R','false,true','desktop','<b>false</b>: يختفي خيار الدفع المختلط (نقدي + بطاقة). يُشترط أيضًا أن تسمح وسائل الدفع بالتقسيم.'],
+    ['CREDIT_SALE_MODE','البيع الآجل','String','Deny','O','Deny,PerCustomer,ManagerApproval','planned','منع / حسب حد العميل / بموافقة مدير.'],
+    ['ALLOW_CASH_PAYMENT','السماح بالدفع النقدي','Boolean','true','R','false,true','planned','إخفاء الدفع النقدي عند false.'],
+    ['ALLOW_CARD_PAYMENT','السماح بالدفع بالبطاقة','Boolean','true','R','false,true','planned','إخفاء الدفع بالبطاقة عند false.'],
+    ['OVERPAYMENT_MODE','الدفع الزائد','String','ReturnChange','R','Deny,ReturnChange','planned','منع المبلغ الزائد أو رده كباقي.'],
+  ]},
+  { id: 'Returns', name: 'المرتجعات', emoji: '↩️', grad: 'linear-gradient(135deg,#be123c,#fb7185)', items: [
+    ['RETURN_DAYS','مدة المرتجع (أيام)','Integer','30','R',null,'both','بعد هذه المدة من تاريخ الفاتورة يحتاج المرتجع موافقة مشرف. الخادم يعيد الفحص.'],
+    ['RETURN_APPROVAL_AMOUNT','مبلغ المرتجع الذي يحتاج موافقة','Decimal','500','R',null,'both','مرتجع قيمته أعلى من هذا المبلغ يحتاج موافقة مشرف.'],
+    ['RETURN_WITHOUT_INVOICE_MODE','مرتجع بدون فاتورة','String','Deny','R','Deny,ManagerApproval,Allow','planned','استرجاع صنف بدون فاتورة أصلية.'],
+    ['RETURN_PRICE_MODE','سعر المرتجع','String','Original','O','Original,Current,Lower','planned','السعر الأصلي / الحالي / الأقل بينهما.'],
+    ['REFUND_METHOD_MODE','طريقة رد المبلغ','String','SameMethod','R','SameMethod,AllowChange','planned','الرد بنفس وسيلة الدفع أو السماح بتغييرها.'],
+    ['RETURN_CROSS_BRANCH','مرتجع من فرع آخر','Boolean','false','R','false,true','server','<b>false</b>: الخادم يرفض مرتجع فاتورة صادرة من فرع آخر.'],
+  ]},
+  { id: 'Invoice', name: 'الفاتورة', emoji: '🧾', grad: 'linear-gradient(135deg,#c8102e,#f43f5e)', items: [
+    ['LINE_DELETE_MODE','حذف سطر','String','Allow','R','ManagerPin,Allow','desktop','<b>ManagerPin</b>: حذف صنف من السلة (أو إنقاص كميته إلى صفر) يحتاج موافقة مشرف.'],
+    ['INVOICE_CANCEL_MODE','إلغاء الفاتورة','String','ManagerPin','R','Deny,ManagerPin,Allow','desktop','يُطبق حاليًا على حذف الفواتير المعلقة: <b>ManagerPin</b> يطلب موافقة مشرف.'],
+    ['MAX_HELD_SALES','أقصى عدد فواتير معلقة','Integer','10','R',null,'desktop','عند بلوغ العدد يرفض الجهاز تعليق فاتورة جديدة.'],
+    ['LINE_EDIT_MODE','تعديل سطر','String','Allow','R','Deny,ManagerPin,Allow','desktop','يخص <b>تقليل</b> الكمية (الزيادة بيع عادي): <b>Deny</b> يمنع، <b>ManagerPin</b> يطلب موافقة.'],
+    ['ALLOW_HOLD_SALE','السماح بتعليق الفاتورة','Boolean','true','R','false,true','planned','إخفاء زر «تعليق» عند false.'],
+    ['INVOICE_NUMBERING_SCOPE','نطاق ترقيم الفواتير','String','Terminal','O','Central,Branch,Terminal','planned','الترقيم حاليًا على مستوى الجهاز: <span class="mono">كود النقطة-تاريخ-تسلسل</span>.'],
+  ]},
+  { id: 'Printing', name: 'الطباعة', emoji: '🖨️', grad: 'linear-gradient(135deg,#0f766e,#2dd4bf)', items: [
+    ['AUTO_PRINT','طباعة تلقائية','Boolean','true','O',null,'desktop','<b>true</b>: يُطبع الإيصال فور إتمام البيع. <b>false</b>: يظهر زر «طباعة الإيصال».'],
+    ['PRINT_COPIES','عدد النسخ','Integer','1','O',null,'desktop','عدد نسخ الإيصال الأصلي (إعادة الطباعة نسخة واحدة).'],
+    ['REPRINT_MODE','إعادة الطباعة','String','ManagerPin','R','Deny,ManagerPin,Allow','desktop','بعد نجاح الطباعة: <b>Deny</b> يخفي الزر، <b>ManagerPin</b> يطلب موافقة. إعادة المحاولة بعد فشل الطباعة ليست إعادة طباعة.'],
+    ['PRINT_SHOW_ORIGINAL_PRICE','طباعة السعر قبل الخصم','Boolean','true','O',null,'planned','إظهار السعر الأصلي مشطوبًا على الإيصال.'],
+  ]},
+  { id: 'Shift', name: 'الوردية والخزنة', emoji: '💰', grad: 'linear-gradient(135deg,#a16207,#eab308)', items: [
+    ['SHIFT_REQUIRED','الوردية إلزامية للبيع','Boolean','true','O',null,'planned','الجهاز يشترط وردية مفتوحة دائمًا حاليًا.'],
+    ['OPENING_CASH_REQUIRED','رصيد الافتتاح إلزامي','Boolean','true','O',null,'planned','إلزام إدخال رصيد افتتاحي عند فتح الوردية.'],
+    ['CASH_MOVEMENT_MODE','إيداع/سحب نقدي','String','ManagerPin','R','Deny,ManagerPin,Allow','both','إضافة نقدية / سحب / توريد للآمن: <b>Deny</b> ممنوع، <b>ManagerPin</b> بموافقة مشرف. الخادم يعيد الفحص.'],
+    ['SHOW_EXPECTED_CASH','إظهار النقد المتوقع للكاشير','Boolean','false','R','false,true','planned','إظهار المبلغ المتوقع في الدرج عند إغلاق الوردية (الإغلاق الأعمى عند false).'],
+    ['CASH_VARIANCE_APPROVAL_AMOUNT','فرق الخزنة الذي يحتاج موافقة','Decimal','100','R',null,'desktop','عند إغلاق الوردية: فرق أكبر من هذا المبلغ يحتاج موافقة مشرف.'],
+    ['CASH_VARIANCE_MODE','فرق الخزنة عند الإغلاق','String','Warn','R','Block,Warn,Allow','planned','منع / تنبيه / سماح عند وجود فرق.'],
+  ]},
+  { id: 'Tax', name: 'الضريبة', emoji: '🧮', grad: 'linear-gradient(135deg,#4338ca,#818cf8)', items: [
+    ['VAT_PERCENT','نسبة ضريبة القيمة المضافة %','Decimal','15','O',null,'desktop','تُحسب بها ضريبة الفاتورة وتظهر في الملخص.'],
+    ['PRICES_INCLUDE_VAT','الأسعار شاملة الضريبة','Boolean','false','O',null,'desktop','<b>true</b>: الضريبة تُستخرج من السعر. <b>false</b>: تُضاف فوقه.'],
+  ]},
+  { id: 'Barcode', name: 'الباركود', emoji: '🔖', grad: 'linear-gradient(135deg,#334155,#94a3b8)', items: [
+    ['DUPLICATE_SCAN_MODE','تكرار مسح نفس الصنف','String','IncreaseQty','O','IncreaseQty,NewLine','desktop','<b>IncreaseQty</b>: يزيد الكمية. <b>NewLine</b>: سطر جديد لكل مسح.'],
+    ['UNKNOWN_BARCODE_MODE','باركود غير معروف','String','Search','O','Message,Search,RequestItem','planned','رسالة / فتح البحث / طلب إضافة صنف.'],
+    ['SUPPORT_QUANTITY_BARCODE','دعم باركود الوزن/الكمية','Boolean','true','O',null,'planned','قراءة الكمية أو الوزن من الباركود.'],
+  ]},
+  { id: 'Security', name: 'الأمان', emoji: '🔐', grad: 'linear-gradient(135deg,#7f1d1d,#dc2626)', items: [
+    ['MANAGER_OVERRIDE_METHOD','طريقة اعتماد المدير','String','Pin','O','UserLogin,Password,Pin','planned','الجهاز يدعم رمز PIN فقط حاليًا.'],
+    ['ALLOW_DATE_CHANGE','السماح بتغيير تاريخ الفاتورة','Boolean','false','R','false,true','planned','تغيير تاريخ الفاتورة يدويًا.'],
+    ['OLD_INVOICE_EDIT_MODE','تعديل فاتورة قديمة','String','Deny','R','Deny,SpecialPermission','planned','تعديل فاتورة بعد حفظها.'],
+  ]},
+  { id: 'Ui', name: 'الواجهة', emoji: '🖥️', grad: 'linear-gradient(135deg,#0369a1,#38bdf8)', items: [
+    ['UI_TOUCH_MODE','وضع اللمس','Boolean','true','O',null,'planned','أزرار أكبر للشاشات اللمسية.'],
+    ['UI_SHOW_ITEM_IMAGE','إظهار صورة الصنف','Boolean','true','O',null,'planned','عرض صور الأصناف في البحث.'],
+    ['UI_QUICK_ITEMS','أزرار الأصناف السريعة','Boolean','true','O',null,'planned','لوحة أصناف سريعة في شاشة البيع.'],
+    ['UI_SEARCH_FIELDS','حقول البحث','String','Barcode,Code,Arabic,English','O',null,'planned','الحقول التي يبحث فيها الكاشير (قيم متعددة مفصولة بفاصلة).'],
+    ['UI_LANGUAGE','لغة الواجهة','String','User','O','Ar,En,User','planned','عربي / إنجليزي / حسب المستخدم.'],
+  ]},
+];
+
+const STATUS = {
+  both:    ['s-both', 'الجهاز + الخادم'],
+  desktop: ['s-desktop', 'مطبقة على الجهاز'],
+  server:  ['s-server', 'الخادم فقط'],
+  data:    ['s-data', 'بانتظار بيانات'],
+  planned: ['s-planned', 'غير مطبقة بعد'],
+};
+const TYPE_AR = { Boolean: 'نعم/لا', Integer: 'رقم صحيح', Decimal: 'رقم عشري', String: 'اختيار' };
+
+function valueColor(i, n) {
+  if (n <= 1) return ['#e0f2fe', '#0369a1'];
+  const t = i / (n - 1);
+  if (t < 0.34) return ['#fee2e2', '#b91c1c'];
+  if (t < 0.67) return ['#fef3c7', '#b45309'];
+  return ['#dcfce7', '#15803d'];
+}
+
+function renderValues(type, def, allowed) {
+  if (allowed) {
+    const list = allowed.split(',');
+    const chips = list.map((v, i) => {
+      const [bg, fg] = valueColor(i, list.length);
+      return `<span class="val ${v === def ? 'def' : ''}" style="background:${bg};color:${fg}">${v}</span>`;
+    }).join('');
+    return `<div class="values">${chips}</div><div class="scale">الترتيب: الأشد ← الأسمح</div>`;
+  }
+  if (type === 'Boolean') {
+    return `<div class="values">${['false', 'true'].map((v) =>
+      `<span class="val ${v === def ? 'def' : ''}" style="background:${v === 'true' ? '#dcfce7' : '#f1f5f9'};color:${v === 'true' ? '#15803d' : '#475569'}">${v}</span>`).join('')}</div>`;
+  }
+  return `<div class="values"><span class="val def" style="background:#e0f2fe;color:#0369a1">${def}</span><span class="muted" style="font-size:12.5px">قيمة حرة (${TYPE_AR[type]})</span></div>`;
+}
+
+const counts = { total: 0, both: 0, desktop: 0, server: 0, data: 0, planned: 0 };
+const catalogEl = document.getElementById('catalog');
+const navEl = document.getElementById('catnav');
+
+CATEGORIES.forEach((cat) => {
+  const cards = cat.items.map(([key, name, type, def, mode, allowed, status, effect]) => {
+    counts.total++; counts[status]++;
+    const [cls, label] = STATUS[status];
+    const accent = { both: '#16a34a', desktop: '#2563eb', server: '#7c3aed', data: '#f59e0b', planned: '#cbd5e1' }[status];
+    const search = `${key} ${name} ${allowed ?? ''} ${def} ${effect.replace(/<[^>]+>/g, ' ')}`.toLowerCase();
+    return `
+      <article class="pol" style="--c:${accent}" data-status="${status}" data-search="${search.replace(/"/g, '')}">
+        <div class="top">
+          <div><div class="name">${name}</div><code class="key">${key}</code></div>
+          <span class="badge ${cls}">${label}</span>
+        </div>
+        <div class="meta">
+          <span class="tag">${TYPE_AR[type]}</span>
+          <span class="badge m-${mode}">${mode === 'R' ? 'تقييد' : 'استبدال'}</span>
+          <span class="tag">الافتراضي: <span class="mono">${def}</span></span>
+        </div>
+        ${renderValues(type, def, allowed)}
+        <div class="effect">${effect}</div>
+      </article>`;
+  }).join('');
+
+  catalogEl.insertAdjacentHTML('beforeend', `
+    <div class="cat" id="cat-${cat.id}">
+      <div class="cat-head" style="background:${cat.grad}">
+        <span class="emoji">${cat.emoji}</span><h2>${cat.name}</h2><small>${cat.items.length} سياسات</small>
+      </div>
+      <div class="cat-body">${cards}</div>
+    </div>`);
+  navEl.insertAdjacentHTML('beforeend', `<a href="#cat-${cat.id}" style="background:${cat.grad}">${cat.emoji} ${cat.name}</a>`);
+});
+
+document.getElementById('stats').innerHTML = [
+  [counts.total, 'سياسة معرّفة'],
+  [counts.both + counts.desktop, 'تؤثر على الكاشير الآن'],
+  [counts.both + counts.server, 'يفحصها الخادم'],
+  [counts.data, 'بانتظار بيانات الرصيد'],
+  [counts.planned, 'غير مطبقة بعد'],
+].map(([n, l]) => `<div class="stat"><b>${n}</b><span>${l}</span></div>`).join('');
+
+let activeStatus = 'all';
+function applyFilter() {
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  let visible = 0;
+  document.querySelectorAll('.cat').forEach((cat) => {
+    let catVisible = 0;
+    cat.querySelectorAll('.pol').forEach((p) => {
+      const show = (activeStatus === 'all' || p.dataset.status === activeStatus) && (!q || p.dataset.search.includes(q));
+      p.classList.toggle('hidden', !show);
+      if (show) catVisible++;
+    });
+    cat.classList.toggle('hidden', catVisible === 0);
+    visible += catVisible;
+  });
+  document.getElementById('empty').style.display = visible ? 'none' : 'block';
+}
+document.getElementById('q').addEventListener('input', applyFilter);
+document.querySelectorAll('.chip-btn').forEach((b) => b.addEventListener('click', () => {
+  document.querySelectorAll('.chip-btn').forEach((x) => x.classList.remove('active'));
+  b.classList.add('active');
+  activeStatus = b.dataset.status;
+  applyFilter();
+}));
+</script>
+</body>
+</html>
