@@ -67,6 +67,46 @@
 | `/pos-system/pos-sale/:id` | header + footer | `PosSaleH` / `PosSaleF` (`headerKey=saleid`) |
 | `/pos-system/pos-return/:id` | header + footer | `PosReturnH` / `PosReturnF` (`headerKey=returnid`) |
 | `/pos-system/pos-shift/:id` | simple form readonly | `PosShift` |
+| `/pos-system/pos-operations-monitor/:id` | شاشة مخصصة | `PosOperationsMonitor` (انظر أدناه) |
+
+### مراقبة عمليات نقاط البيع (`PosOperationsMonitor`)
+
+شاشة قراءة فقط تعرض كل ما يحدث على الأجهزة في سجل موحد، مع ملخص وتنبيهات وتفاصيل كل عملية.
+
+- **Backend:** `PosOperationsMonitorAppService`. كل الأكشنات GET، فتكفي صلاحية Access على `PosOperationsMonitor`:
+  - `GetOverview`: مؤشرات الفترة مع مقارنتها بالفترة السابقة، ومنحنى النشاط (بالساعة حتى 48 ساعة، وبعدها باليوم)، وتوزيع الدفع، وعدادات التنبيهات، وحالة الأجهزة.
+  - `GetEvents`: السجل الموحد. الفلترة والترتيب والتقسيم تتم في قاعدة البيانات لكل مصدر، ثم تُدمج النتائج. أقصى Skip هو 5000، وأقصى صفحة 2000 (للتصدير).
+  - `GetSale` / `GetReturn` / `GetShift`: تفاصيل العملية.
+  - `GetLookups`: قوائم الأجهزة والكاشيرية ووسائل الدفع.
+- **مصادر السجل:**
+  - المبيعات: `PosSaleH` بدون Draft.
+  - المرتجعات والاستبدال: `PosReturnH`.
+  - فتح وإغلاق الوردية: `PosShift`.
+  - الإيداع والسحب وفتح الدرج: `PosShiftCashMovement`.
+  - الموافقات: `PosSupervisorOverrideLog`.
+  - مشاكل المزامنة: `PosSyncLog` بحالة Conflict أو Failed فقط.
+- **أوفلاين:**
+  - العملية أوفلاين إذا كان `IsOfflineOrigin` مفعّلًا، أو إذا بدأ `Notes`/`Reason` بـ `[OFFLINE]` في الحركات النقدية والموافقات.
+  - المعلّق على الجهاز ولم يُرفع بعد لا يراه السيرفر. الشاشة تعرض فقط `PendingSyncCount` الذي يبلّغ به الجهاز عند إغلاق الوردية.
+- **التنبيهات:** مبنية على حقائق مخزنة فقط، بلا تقديرات:
+
+  | التنبيه | الشرط | المستوى |
+  |---|---|---|
+  | تعارض مزامنة | سجل مزامنة بحالة Conflict أو Failed | Attention |
+  | فرق نقدية غير معتمد | فرق عند الإغلاق بدون اعتماد | Attention |
+  | فرق نقدية معتمد | فرق عند الإغلاق مع اعتماد | Info |
+  | وردية مفتوحة من يوم سابق | وردية مفتوحة بدأت قبل اليوم | Attention |
+  | عمليات غير مرفوعة عند الإغلاق | `PendingSyncCount > 0` | Attention |
+  | موافقة مرفوضة | حالة الموافقة Rejected | Attention |
+  | معتمِد غير مؤهل وقت المزامنة | `[NOT-ELIGIBLE-AT-SYNC]` في السبب | Attention |
+  | دفع بطاقة معلّق | حالة الدفع OfflinePending أو PendingReconciliation | Attention |
+  | إعادة طباعة، موافقة، تدريب، إلغاء | — | Info |
+
+  مستوى Critical محجوز ولا يُستخدم حاليًا.
+- **ترحيل المخزون:** يظهر كمرحلة "غير مفعّل بعد" إلى أن يُكتب `PosInventoryPostingBatch` (`InventoryPostingEnabled`).
+- **عمليات التدريب:** مستبعدة افتراضيًا، وتظهر عبر فلتر "تدريب" أو "إظهار عمليات التدريب".
+- **الرابط يحفظ الحالة (Deep link):** كل الفلاتر وطريقة العرض والتفاصيل المفتوحة محفوظة في query params، مثلًا `?range=last7d&quick=1&open=sale:<id>`.
+- **التحديث التلقائي:** كل 60 ثانية، ويتوقف عندما يكون التبويب مخفيًا. إذا نزل المستخدم في القائمة لا تُستبدل العناصر، بل يظهر زر "N عملية جديدة".
 
 ## API
 
@@ -91,6 +131,7 @@
 | PosSaleH | pos-system/pos-sale | — | — | قراءة فقط (+ PosSaleF فوتر) |
 | PosReturnH | pos-system/pos-return | — | — | قراءة فقط (+ PosReturnF فوتر) |
 | PosShift | pos-system/pos-shift | — | — | قراءة فقط |
+| PosOperationsMonitor | pos-system/pos-operations-monitor | PosOperationsMonitor | Branches.GetAllData | قراءة فقط (تقارير، sort 70020) |
 
 - `RelatedEntities` تمنح صلاحية الكيان كاملًا.
 - `RelatedExtraApis` تمنح APIs قراءة محددة، تحتاجها قوائم الاختيار.
