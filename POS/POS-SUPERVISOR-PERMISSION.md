@@ -128,3 +128,13 @@ WHERE "Name" ILIKE '%PosSupervisor%';
 
 - تعيين PIN (`SetMyPin`) أصبح متاحًا لأي مستخدم مسجّل دخولًا؛ **الظهور في قائمة الاعتماد** ما زال يتطلب الصلاحية أعلاه.
 - جدول `PosUserPin` في **POS** وليس Administration — لا تخلط القاعدتين.
+
+---
+
+## صلاحية مزامنة الجهاز (`PosDeviceSync`)
+
+- عنصر صلاحية فقط (بدون صفحة) تحت «إعدادات نقطة البيع»: **مزامنة جهاز نقطة البيع** (`MenuKey = PosDeviceSync`).
+- الاسم الحرفي: `Adminstration.Entities.PosDeviceSync.Create` (أو المكافئ `Adminstration.Menu.PosDeviceSync.Create`).
+- من يملكها (مثل المدير) يستطيع رفع عمليات الجهاز المسجّلة باسم مستخدم آخر. التفاصيل في [POS-DESKTOP-SECURITY.md](POS-DESKTOP-SECURITY.md).
+- المنح والتحقق بنفس طريقة `PosSupervisor` أعلاه (استبدل الاسم في SQL)، ومدير الـ tenant يملكها تلقائيًا.
+- عنصر القائمة عام على مستوى الـ Host (`TenantId = null`) ويأتي من `PosWebMenusDataSeedContributor`، لذلك لا تضيفه `PosTenantSetup/SyncMissing` (هي خاصة ببيانات التينانت الحالي فقط). مدير الـ tenant لا يحتاج منحًا.

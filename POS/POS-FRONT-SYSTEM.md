@@ -127,6 +127,7 @@
 | PosPaymentMethod | pos-system/pos-payment-method | PosPaymentMethod | — | نعم |
 | PosPolicyValue | pos-system/pos-policy-value | PosPolicyValue, PosPolicy, PosTenantSetup | PosTerminal.GetAllData, Branches.GetAllData | نعم |
 | PosCashier | (بدون صفحة — للديسكتوب) | — | قراءة البيانات المرجعية | Access + Insert |
+| PosDeviceSync | (بدون صفحة — صلاحية فقط) | PosDeviceSync | — | Insert = رفع عمليات جهاز مسجّلة باسم مستخدم آخر ([التفاصيل](POS-DESKTOP-SECURITY.md)) |
 | PosCashBox | pos-system/pos-cash-box | PosCashBox | PosTerminal.GetAllData, Branches.GetAllData | نعم |
 | PosSaleH | pos-system/pos-sale | — | — | قراءة فقط (+ PosSaleF فوتر) |
 | PosReturnH | pos-system/pos-return | — | — | قراءة فقط (+ PosReturnF فوتر) |
