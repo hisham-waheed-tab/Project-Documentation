@@ -69,6 +69,7 @@ POST …/api/v1/TABUserPermission/SyncAbpPermissionGrants
 | `SetPin` `{userid, pin, displayname}` | PUT | تعديل |
 | `Unlock` `{userid}` | PUT | تعديل |
 | `Disable?userId=` | DELETE | حذف |
+| `DisableOfflinePin?userId=` | DELETE | حذف (رمز الدخول بدون اتصال؛ المستخدم يعيّن رمزًا جديدًا بعدها) |
 
 قواعد الرمز (نفسها في الويب والسيرفر والكاشير): أرقام فقط 6–8، ليس رقمًا مكررًا، ليس متتاليًا (123456 / 654321).
 
@@ -127,6 +128,7 @@ WHERE "Name" ILIKE '%PosSupervisor%';
 ## ملاحظات
 
 - تعيين PIN (`SetMyPin`) أصبح متاحًا لأي مستخدم مسجّل دخولًا؛ **الظهور في قائمة الاعتماد** ما زال يتطلب الصلاحية أعلاه.
+- جدول `PosUserPin` فيه نوعان (`Purpose`): 1 مشرف و2 دخول بدون اتصال. الاعتماد ومزامنة الرموز للأجهزة تستخدم النوع 1 فقط. ([الدخول بدون اتصال](POS-DESKTOP-SECURITY.md))
 - جدول `PosUserPin` في **POS** وليس Administration — لا تخلط القاعدتين.
 
 ---
