@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل استخدام واختبار نقاط البيع — Tab-MS POS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f6fb;
+    --card: #ffffff;
+    --ink: #1c2233;
+    --muted: #667085;
+    --line: #e4e7ef;
+    --brand: #c8102e;
+    --brand-dark: #8e0b20;
+    --deny: #e5484d;
+    --pin: #f59e0b;
+    --allow: #16a34a;
+    --info: #2563eb;
+    --purple: #7c3aed;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.75;
+  }
+  code, .mono { font-family: 'Cascadia Code', Consolas, monospace; direction: ltr; unicode-bidi: embed; background: #f1f5f9; padding: 1px 6px; border-radius: 6px; font-size: .92em; }
+  a { color: var(--brand); }
+
+  /* ── Hero ───────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, #1c2233 0%, #3b1020 55%, var(--brand) 100%);
+    color: #fff;
+    padding: 56px 24px 96px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; inset: auto -120px -160px auto;
+    width: 420px; height: 420px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,.18), transparent 70%);
+  }
+  .hero .wrap { max-width: 1180px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero h1 { font-size: 40px; margin: 0 0 8px; font-weight: 800; }
+  .hero p { margin: 0; opacity: .85; font-size: 18px; max-width: 760px; }
+  .stats { display: flex; gap: 14px; margin-top: 28px; flex-wrap: wrap; }
+  .stat {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    backdrop-filter: blur(6px);
+    border-radius: 14px; padding: 12px 18px; min-width: 150px; font-size: 14px;
+  }
+  .stat b { display: block; font-size: 28px; font-weight: 800; }
+  .stat span { font-size: 13px; opacity: .85; }
+  .stat strong { display: block; font-size: 13px; opacity: .85; }
+
+  main { max-width: 1180px; margin: -64px auto 64px; padding: 0 20px; position: relative; z-index: 2; }
+  section.card {
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(28,34,51,.07);
+    padding: 28px; margin-bottom: 22px; border: 1px solid var(--line);
+    scroll-margin-top: 80px;
+  }
+  h2 { margin: 0 0 14px; font-size: 24px; display: flex; align-items: center; gap: 10px; }
+  h2 .ic {
+    width: 38px; height: 38px; border-radius: 11px; display: inline-grid; place-items: center;
+    background: #fdecef; color: var(--brand); font-size: 20px;
+  }
+  h3 {
+    margin: 26px 0 10px; font-size: 18px; padding: 6px 12px; border-radius: 10px;
+    background: #f8fafc; border-inline-start: 4px solid var(--brand);
+  }
+  .muted { color: var(--muted); }
+  ol, ul { padding-inline-start: 22px; }
+  li { margin: 3px 0; }
+
+  /* ── TOC ────────────────────────────── */
+  .toc {
+    position: sticky; top: 0; z-index: 20;
+    background: #fff; border: 1px solid var(--line); border-radius: 14px;
+    padding: 10px; display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px;
+    box-shadow: 0 4px 14px rgba(28,34,51,.05);
+  }
+  .toc a {
+    text-decoration: none; font-size: 13.5px; font-weight: 700; padding: 6px 12px; border-radius: 999px;
+    color: var(--ink); border: 1px solid var(--line); background: #fafbff;
+  }
+  .toc a:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  /* ── Tables ─────────────────────────── */
+  .tbl { overflow-x: auto; margin: 10px 0; }
+  table.simple { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  table.simple th, table.simple td { padding: 9px 12px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }
+  table.simple th { background: #f8fafc; font-weight: 800; }
+  table.simple tr:hover td { background: #fcfcff; }
+  .checklist table.simple td:nth-child(5) { min-width: 56px; }
+  .checklist table.simple td:nth-child(6) { min-width: 140px; }
+  .checklist table.simple td:nth-child(5), .checklist table.simple td:nth-child(6) { border-inline-start: 1px dashed var(--line); }
+
+  /* ── Notes ──────────────────────────── */
+  .note {
+    border-radius: 12px; padding: 12px 16px; margin-top: 12px; font-size: 14.5px;
+    background: #fffbeb; border: 1px solid #fde68a; color: #92400e;
+  }
+  .note.blue { background: #eff6ff; border-color: #bfdbfe; color: #1e3a8a; }
+  .note.green { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
+  .note p { margin: 4px 0; }
+  footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px; }
+
+  @media (max-width: 860px) { .hero h1 { font-size: 30px; } }
+  @media print {
+    .toc { display: none; }
+    .hero { padding: 24px; }
+    main { margin-top: 0; }
+    section.card { box-shadow: none; break-inside: auto; }
+    .checklist { break-before: page; }
+    table.simple tr { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>🧾 دليل استخدام واختبار نقاط البيع (POS)</h1>
+    <p>خطوات مرقّمة قصيرة: الشاشة ← ماذا تفعل ← ماذا يظهر.</p>
+    <div class="stats"><div class="stat"><strong>آخر تحديث:</strong> 2026-10-01</div><div class="stat"><b>2</b><span>جزءان: الويب + الكاشير</span></div><div class="stat"><b>15</b><span>سيناريو اختبار</span></div></div>
+  </div>
+</header>
+
+<main>
+
+  <nav class="toc"><a href="#s1">🌐 1. إعداد الويب</a><a href="#s2">🖥️ 2. برنامج الكاشير</a><a href="#s3">🛡️ 3. السياسات</a><a href="#s4">📊 4. مراقبة العمليات</a><a href="#s5">🚧 5. ما ليس حقيقيًا بعد</a><a href="#s6">✅ 6. جدول الاختبار</a></nav>
+
+  <section class="card">
+  <h2><span class="ic">👋</span>قبل أن تبدأ</h2>
+  <p><strong>لمن هذا الدليل؟</strong> لمدير المشروع / المختبِر.</p>
+<p>كل خطوة: <strong>الشاشة ← ماذا تفعل ← ماذا يظهر</strong>.</p>
+
+  </section>
+
+<section class="card" id="s1">
+<h2><span class="ic">🌐</span>1. إعداد الويب</h2>
+<ol>
+<li><strong>نظام نقطة البيع ← الخزن النقدية</strong> ← إضافة خزنة (الكود، الاسم، الفرع) ← حفظ ← تظهر في القائمة.</li>
+<li><strong>نقاط البيع</strong> ← إضافة (الكود، الاسم، الفرع، الخزنة الافتراضية، المخزن الافتراضي) ← حفظ ← تظهر في القائمة.</li>
+<li><strong>نقاط البيع</strong> ← فعّل «السماح بالبيع أوفلاين» لو ستختبر بدون إنترنت.</li>
+<li><strong>طرق الدفع</strong> ← راجع النقدي والبطاقة (الاسم، الحد الأقصى، مسموح أوفلاين، تقسيم الدفع) ← حفظ.</li>
+<li><strong>فروع المستخدمين</strong> ← اختر الكاشير ← علّم الفرع ← عيّنه <strong>فرعًا افتراضيًا</strong> ← حفظ.</li>
+<li><strong>صلاحيات المستخدم</strong> ← اختر الكاشير ← صفحة «كاشير نقطة البيع» ← علّم <strong>دخول + إضافة</strong> ← حفظ.</li>
+<li><strong>صلاحيات المستخدم</strong> ← اختر المشرف ← صفحة «مشرف نقطة البيع» ← علّم <strong>إضافة</strong> ← حفظ.</li>
+<li><strong>فروع المستخدمين</strong> ← اربط المشرف بنفس الفرع ← حفظ.</li>
+<li><strong>رموز PIN للمشرفين</strong> ← أمام المشرف اضغط «تعيين رمز» ← اكتب رمزًا من 6–8 أرقام (غير مكرر وغير متتالي) ← حفظ.</li>
+<li><strong>رموز PIN للمشرفين</strong> ← اختر الفرع ← يظهر المشرف «نعم» في عمود «يظهر كمشرف؟».</li>
+<li>لو ظهر «لا» ← اقرأ السبب المكتوب بجانبها ← أكمل الشرط الناقص ← حدّث الشاشة.</li>
+</ol>
+<div class="note"><p>⚠️ الخزنة ونقطة البيع لازم يكونا من <strong>نفس الفرع</strong>.</p>
+<p>💡 مدير الشركة يكفيه <strong>رمز PIN مفعّل</strong> فقط ليكون مشرفًا.</p></div>
+
+</section>
+<section class="card" id="s2">
+<h2><span class="ic">🖥️</span>2. برنامج الكاشير</h2>
+<h3>2.1 التثبيت والدخول</h3>
+<ol>
+<li>اضغط مرتين على ملف التثبيت ← يظهر اختصار <strong>TABMS POS</strong> على سطح المكتب.</li>
+<li>لو ظهرت رسالة ويندوز الزرقاء ← More info ← Run anyway.</li>
+<li>افتح البرنامج ← دخول ← سجّل في المتصفح ← اضغط <strong>Open Electron</strong> ← يرجع للبرنامج.</li>
+<li>نافذة <strong>«رمز الدخول بدون اتصال»</strong> ← اكتب رمزًا شخصيًا 6–8 أرقام ← حفظ الرمز.</li>
+</ol>
+<h3>2.2 فتح الوردية</h3>
+<ol>
+<li><strong>فتح وردية جديدة</strong> ← اختر الطرفية ← اكتب الرصيد الافتتاحي.</li>
+<li>اضغط <strong>فتح الوردية والبدء</strong> ← تظهر شاشة البيع.</li>
+</ol>
+<h3>2.3 البيع والدفع</h3>
+<ol>
+<li><strong>شاشة البيع</strong> ← اكتب باركود أو اسم أو كود الصنف ← اختره ← يُضاف للسلة.</li>
+<li>عدّل الكمية أو السعر أو الخصم من سطر الصنف (لو مسموح).</li>
+<li>(اختياري) اختر العميل ← بحث بالاسم أو الهاتف، أو «متابعة البيع بدون عميل».</li>
+<li>اضغط <strong>إتمام الدفع</strong> ← اختر نقدي / بطاقة / مختلط.</li>
+<li>نقدي ← اكتب المبلغ أو «المبلغ بالضبط» ← يظهر الباقي.</li>
+<li>تأكيد ← تظهر <strong>«تم إتمام البيع بنجاح»</strong> ← بيع جديد.</li>
+</ol>
+<h3>2.4 تعليق الفاتورة واسترجاعها</h3>
+<ol>
+<li><strong>شاشة البيع</strong> ← تعليق ← (ملاحظة اختيارية) ← تفرغ السلة.</li>
+<li><strong>الفواتير المعلقة</strong> ← استرجاع ← ترجع الأصناف للسلة.</li>
+</ol>
+<h3>2.5 موافقة المشرف</h3>
+<ol>
+<li>عند خصم كبير أو عملية تحتاج موافقة ← تظهر نافذة الموافقة.</li>
+<li>اختر المشرف ← يكتب رمزه ← <strong>اعتماد</strong> ← تكمل العملية.</li>
+</ol>
+<h3>2.6 المرتجع والاستبدال</h3>
+<ol>
+<li><strong>عمليات ← المرتجعات</strong> ← اختر مرتجع أو استبدال.</li>
+<li>ابحث برقم الفاتورة أو هاتف العميل ← افتح الفاتورة.</li>
+<li>حدد الأصناف والكمية ← اختر السبب.</li>
+<li>(لو طُلبت) موافقة المشرف ← اختر طريقة رد المبلغ ← تأكيد ← يتم المرتجع.</li>
+<li>في الاستبدال ← اختر الصنف البديل ← ادفع أو استرد الفرق.</li>
+</ol>
+<h3>2.7 الحركات النقدية</h3>
+<ol>
+<li><strong>عمليات ← أدوات الكاشير</strong> ← إضافة نقدية / سحب نقدي / توريد للآمن.</li>
+<li>اكتب المبلغ ← اختر السبب ← حفظ (أو «اعتماد مشرف وحفظ») ← تظهر في سجل اليوم.</li>
+</ol>
+<h3>2.8 إغلاق الوردية</h3>
+<ol>
+<li><strong>عمليات ← إغلاق الوردية</strong> ← راجع <strong>ملخص الوردية</strong> ← التالي.</li>
+<li><strong>جرد النقدية</strong> ← اكتب المبلغ الفعلي في الدرج.</li>
+<li>لو فيه زيادة أو عجز ← اختر السبب (وموافقة مشرف لو الفرق كبير).</li>
+<li>تأكيد ← تظهر <strong>«تم إغلاق الوردية بنجاح»</strong> ← تسجيل الخروج.</li>
+</ol>
+<h3>2.9 العمل بدون إنترنت</h3>
+<ol>
+<li>افصل الإنترنت (أو <strong>الأجهزة والاتصال ← تشغيل وضع عدم الاتصال يدويًا</strong>) ← المؤشر يصبح «غير متصل».</li>
+<li>بِع كالمعتاد ← العملية تُحفظ على الجهاز.</li>
+<li>للدخول بدون إنترنت ← شاشة الدخول ← «دخول بدون اتصال» ← اكتب رمز الدخول بدون اتصال.</li>
+<li>أرجع الإنترنت ← سجّل الدخول متصلًا بنفس المستخدم.</li>
+<li><strong>الأجهزة والاتصال ← مزامنة الآن</strong> ← عداد «بانتظار المزامنة» يصبح صفرًا.</li>
+</ol>
+<h3>2.10 رسائل شائعة</h3>
+<div class="tbl"><table class="simple">
+<thead>
+<tr>
+<th>الرسالة</th>
+<th>ماذا تفعل</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>لم يتم تحديد فرع افتراضي.</td>
+<td>فروع المستخدمين ← عيّن فرعًا افتراضيًا</td>
+</tr>
+<tr>
+<td>لا توجد نقاط بيع مسجّلة لهذا الفرع.</td>
+<td>نقاط البيع ← أضف نقطة بيع على الفرع</td>
+</tr>
+<tr>
+<td>الخزنة الافتراضية لنقطة البيع تابعة لفرع آخر…</td>
+<td>اجعل الخزنة ونقطة البيع من نفس الفرع</td>
+</tr>
+<tr>
+<td>لا يوجد مشرفون معرّفون لهذا الفرع برمز PIN</td>
+<td>رموز PIN للمشرفين ← أكمل الشرط الناقص</td>
+</tr>
+<tr>
+<td>حسابك ليس لديه صلاحية تنفيذ هذه العملية (…)</td>
+<td>أضف الصلاحية المكتوبة ← سجّل الدخول من جديد</td>
+</tr>
+<tr>
+<td>عمليات مسجّلة باسم مستخدم آخر موقوفة…</td>
+<td>ادخل بنفس المستخدم صاحب العمليات</td>
+</tr>
+</tbody>
+</table></div>
+<h3>2.11 الإبلاغ عن مشكلة</h3>
+<ol>
+<li>صوّر الشاشة وفيها رسالة الخطأ.</li>
+<li>اكتب الوقت، واسم المستخدم، ورقم الفاتورة (إن وُجد).</li>
+<li>أرسل ملفات السجل من <code>%APPDATA%\tabms-pos-desktop</code> (الملف <code>pos-auth.log</code> وملف اليوم داخل مجلد <code>logs</code>).</li>
+</ol>
+
+</section>
+<section class="card" id="s3">
+<h2><span class="ic">🛡️</span>3. السياسات</h2>
+<ol>
+<li><strong>سياسات نقطة البيع</strong> ← اختر المستوى والجهة (مثلًا نقطة البيع).</li>
+<li>اضغط <strong>تخصيص</strong> على السياسة ← غيّر القيمة ← <strong>حفظ</strong>.</li>
+<li><strong>معاينة السياسات الفعّالة</strong> ← اختر نقطة البيع والمستخدم ← تأكد من القيمة.</li>
+<li>في البرنامج ← <strong>أدوات الكاشير ← تحديث السياسات</strong> ← يطبّق التغيير فورًا.</li>
+</ol>
+<p>شرح كل سياسة: <a href="https://hisham-waheed-tab.github.io/Project-Documentation/POS/POS-POLICIES-GUIDE.html">دليل سياسات نقاط البيع</a></p>
+
+</section>
+<section class="card" id="s4">
+<h2><span class="ic">📊</span>4. مراقبة العمليات</h2>
+<ol>
+<li><strong>مراقبة عمليات نقاط البيع</strong> ← اختر الفترة «اليوم» والفرع.</li>
+<li><strong>سجل العمليات</strong> ← تأكد أن كل فواتيرك ومرتجعاتك وورديتك ظاهرة بنفس المبالغ.</li>
+<li>فلتر <strong>تحتاج انتباه</strong> و<strong>مشاكل مزامنة</strong> ← المفروض لا يوجد شيء غير مفهوم.</li>
+</ol>
+
+</section>
+<section class="card" id="s5">
+<h2><span class="ic">🚧</span>5. ما ليس حقيقيًا بعد</h2>
+<ul>
+<li>الدفع بالبطاقة محاكاة (النتيجة عشوائية).</li>
+<li>الطباعة محاكاة (لا يخرج ورق).</li>
+<li>اختبار الطابعة وجهاز الدفع والماسح محاكاة.</li>
+<li>رصيد المخزون ونقاط الولاء غير متاحة.</li>
+<li>اختصارات لوحة المفاتيح (F1–F10) لا تعمل.</li>
+<li>آخر العمليات وإعادة طباعة آخر إيصال بيانات تجريبية.</li>
+<li>المقاسات، الرقم التسلسلي، إيصال هدية، إرسال الإيصال، صنف مفتوح، وضع التدريب: غير مكتملة.</li>
+<li>الفواتير المعلقة على نفس الجهاز فقط.</li>
+</ul>
+
+</section>
+<section class="card checklist" id="s6">
+<h2><span class="ic">✅</span>6. جدول الاختبار</h2>
+<div class="tbl"><table class="simple">
+<thead>
+<tr>
+<th>#</th>
+<th>السيناريو</th>
+<th>الخطوات</th>
+<th>النتيجة المتوقعة</th>
+<th>✓/✗</th>
+<th>ملاحظات</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>المشرف</td>
+<td>قسم 1 خطوات 7–10</td>
+<td>«يظهر كمشرف؟» = نعم</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>الدخول</td>
+<td>تثبيت ← دخول</td>
+<td>يطلب رمز الدخول بدون اتصال</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>فتح وردية</td>
+<td>الطرفية + رصيد افتتاحي</td>
+<td>تظهر شاشة البيع</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>بيع نقدي</td>
+<td>صنفان ← نقدي</td>
+<td>تم إتمام البيع بنجاح</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>خصم كبير</td>
+<td>خصم فوق الحد</td>
+<td>يطلب موافقة مشرف</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>تعليق</td>
+<td>تعليق ← استرجاع</td>
+<td>ترجع الأصناف</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>دفع مختلط</td>
+<td>نقدي + بطاقة</td>
+<td>يكتمل البيع</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>مرتجع</td>
+<td>فاتورة اليوم ← صنف</td>
+<td>يتم المرتجع</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>استبدال</td>
+<td>صنف بآخر</td>
+<td>يُحسب الفرق</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>سحب نقدي</td>
+<td>أدوات الكاشير ← سحب</td>
+<td>يظهر في تقرير الإغلاق</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td>بيع أوفلاين</td>
+<td>فصل الإنترنت ← بيع</td>
+<td>يُحفظ على الجهاز</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>المزامنة</td>
+<td>إنترنت ← مزامنة الآن</td>
+<td>بانتظار المزامنة = 0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td>سياسة</td>
+<td>تعديل ← تحديث السياسات</td>
+<td>يتغير السلوك</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>14</td>
+<td>إغلاق بفرق</td>
+<td>مبلغ أقل من المتوقع</td>
+<td>يطلب سببًا ثم يغلق</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>15</td>
+<td>المراقبة</td>
+<td>بعد الاختبار</td>
+<td>كل العمليات ظاهرة</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+</section>
+
+</main>
+
+<footer>Tab-MS POS — دليل المستخدم والمختبِر · آخر تحديث 2026-10-01 · <a href="POS-POLICIES-GUIDE.html">دليل سياسات نقاط البيع</a></footer>
+</body>
+</html>

@@ -2,6 +2,9 @@
 
 قاعدة `Dev-TABMS.POS` (PostgreSQL). كل الجداول فيها `tenantid` + soft delete (`isdeleted`).
 المفتاح دائماً `id` (Guid). `Number` / `ShiftNumber` أرقام عرض فقط وليست مفاتيح.
+أسماء الجداول PascalCase بين علامتي تنصيص (`"PosTerminal"`)، والأعمدة lowercase (`defaultstoreid`).
+
+آخر migration: `20261013093240_PosInventoryPosting_PriceList_Variant`. الربط مع المخزون بالتفصيل: [POS-INVENTORY-INTEGRATION.md](POS-INVENTORY-INTEGRATION.md).
 
 ## قاعدة الربط
 
@@ -19,8 +22,11 @@
 | مستخدم | Administration | `AbpUsers` (IdentityUserId) |
 | دور | Administration | `TABTenantRole` |
 | صنف | Inventory | `InvItems` |
+| SKU | Inventory | `InvItemVariants` |
 | مخزن | Inventory | `InvStores` |
-| وحدة | Inventory | وحدات الصنف في Inventory |
+| وحدة | Inventory | `InvUnits` (والمعامل في `InvItemOtherUnits`) |
+| قائمة أسعار | Inventory | `InvPriceLists` |
+| مستند مخزون | Inventory | `TrxInvH` |
 
 **نوع الربط** في الجداول التالية:
 - **FK**: قيد حقيقي في قاعدة البيانات.
@@ -40,9 +46,11 @@
 |---|---|---|---|
 | `BranchId` | فرع | خارجي | نعم |
 | `DefaultCashBoxId` | `PosCashBox` | منطقي | لا |
-| `DefaultStoreId` | مخزن | خارجي | لا |
+| `DefaultStoreId` | مخزن | خارجي | لا (بدونه لا يظهر الرصيد ويفشل الترحيل للمخزون) |
+| `PriceListId` | قائمة أسعار | خارجي | لا (فارغ = القائمة الافتراضية للفرع `InvBranchPriceLists`) |
 
 - الخزنة الافتراضية لازم تكون من نفس فرع نقطة البيع (يرفض السيرفر غير ذلك عند الحفظ).
+- `DeviceFingerprint` موجود لكن غير مستخدم حاليًا: الجهاز لا يُربط بنقطة بيع معينة؛ الكاشير يختار نقطة البيع عند فتح الوردية.
 
 #### `PosCashBox` — الخزنة النقدية
 فريد: `TenantId + BranchId + Code`. الحقول: `Code`، `AraName`، `LatName`.
@@ -58,8 +66,8 @@
   - أو عليها وردية غير مغلقة.
 - نقلها إلى فرع نقطة البيع التي تستخدمها مسموح (تصحيح).
 
-#### `PosTerminalDevice` — أجهزة نقطة البيع
-الحقول: `DeviceType` (طابعة، درج، جهاز دفع...).
+#### `PosTerminalDevice` — الأجهزة الطرفية لنقطة البيع
+الحقول: `DeviceType` (طابعة، درج، جهاز دفع...). ليست جهاز الكمبيوتر نفسه.
 
 | حقل العلاقة | يشير إلى | النوع | إلزامي |
 |---|---|---|---|
@@ -90,7 +98,8 @@
 | `LoyaltyTierId` | `PosLoyaltyTier` | منطقي | لا |
 
 #### `PosItemSetting` — إعدادات الصنف في POS
-امتداد لصنف Inventory داخل POS فقط. الحقول: `ShowOnPos`، `IsQuickButton`، `MinSellPrice`.
+امتداد لصنف Inventory داخل POS فقط. الحقول: `ShowOnPos` (إخفاء الصنف من الكاشير)، `DefaultDeliveryType` (1 فوري، 2 مؤجل)، `IsQuickButton`، `MinSellPrice`.
+السعر **ليس** هنا: يأتي من قائمة الأسعار في Inventory (`InvItemPrices`).
 
 | حقل العلاقة | يشير إلى | النوع | إلزامي |
 |---|---|---|---|
@@ -192,15 +201,17 @@ PosReturnH
 | `CustomerId` | `PosCustomer` | منطقي | لا (فارغ = عميل نقدي) |
 | `LockedByTerminalId` | `PosTerminal` | منطقي | لا (قفل الفاتورة المعلقة) |
 | `RelatedReturnId` | `PosReturnH` | منطقي | لا (فاتورة ناتجة عن استبدال) |
+| `InventoryBatchId` | `PosInventoryPostingBatch` | منطقي | لا (فارغ = لم تُرحّل للمخزون بعد) |
 
 #### `PosSaleF` — سطور الفاتورة
-فريد: `SaleId + LineNo`. الحقول: `Quantity`، `UnitPrice`، `LineTotal`، snapshot لاسم الصنف.
+فريد: `SaleId + LineNo`. الحقول: `Quantity` (بوحدة السطر)، `UnitPrice`، `LineTotal`، `IsOpenItem`، snapshot لاسم الصنف والوحدة.
 
 | حقل العلاقة | يشير إلى | النوع | إلزامي |
 |---|---|---|---|
 | `SaleId` | `PosSaleH` | **FK** | نعم |
-| `ItemId` | صنف | خارجي | لا |
-| `UnitId` | وحدة | خارجي | لا |
+| `ItemId` | صنف | خارجي | لا (فارغ في الصنف المفتوح) |
+| `VariantId` | SKU | خارجي | لا |
+| `UnitId` | وحدة | خارجي | لا (السطر بدون وحدة لا يُرحّل) |
 | `StoreId` | مخزن | خارجي | لا |
 
 #### `PosSalePayment` — مدفوعات الفاتورة
@@ -247,15 +258,19 @@ PosReturnH
 | `ReasonId` | `PosReturnReason` | منطقي | لا |
 | `ExchangeSaleId` | `PosSaleH` (فاتورة الاستبدال الجديدة) | منطقي | لا |
 | `ApprovedByUserId` | مستخدم (المشرف) | خارجي | لا |
+| `InventoryBatchId` | `PosInventoryPostingBatch` | منطقي | لا (فارغ = لم يُرحّل للمخزون بعد) |
 
 #### `PosReturnF` — سطور المرتجع
-فريد: `ReturnId + LineNo`.
+فريد: `ReturnId + LineNo`. `VariantId` و`UnitId` و`StoreId` تُنسخ من سطر البيع الأصلي.
 
 | حقل العلاقة | يشير إلى | النوع | إلزامي |
 |---|---|---|---|
 | `ReturnId` | `PosReturnH` | **FK** | نعم |
 | `OriginalSaleLineId` | `PosSaleF` | منطقي | لا |
 | `ItemId` | صنف | خارجي | لا |
+| `VariantId` | SKU | خارجي | لا |
+| `UnitId` | وحدة | خارجي | لا |
+| `StoreId` | مخزن | خارجي | لا |
 | `ExchangeItemId` | صنف (البديل في الاستبدال) | خارجي | لا |
 
 #### `PosReturnPayment` — رد المبلغ
@@ -280,23 +295,28 @@ PosReturnH
 
 | الاتجاه | ماذا |
 |---|---|
-| Inventory ← POS (قراءة) | `InvItems` (الأصناف) و`InvItemStore.Price` (السعر لكل فرع/مخزن). الديسكتوب يقرأها من Inventory API ويخزنها محلياً |
-| POS → Inventory (أثر المخزون) | `PosInventoryPostingBatch` (BranchId، StoreId، الفترة، Status، `InventoryDocumentId`) ← `PosInventoryPostingLine` (ItemId، StoreId، SoldQuantity، ReturnedQuantity، `NetQuantity`) |
+| Inventory ← POS (قراءة) | كتالوج البيع `InvPosCatalog/Get`: الأصناف، الـ SKUs، وحدات البيع، الباركود، أسعار قائمة الجهاز أو الفرع (`InvItemPrices`)، ورصيد مخزن الجهاز. الديسكتوب يخزنه محلياً |
+| POS → Inventory (أثر المخزون) | عند إقفال الوردية: `PosInventoryPostingBatch` (دفعة لكل مخزن) ← `PosInventoryPostingLine`، ثم `InvPosPosting/Post` ينشئ `TrxInvH`/`TrxInvF` |
 
 | الجدول | حقل العلاقة | يشير إلى | النوع | إلزامي |
 |---|---|---|---|---|
 | `PosInventoryPostingBatch` | `BranchId` | فرع | خارجي | نعم |
-| | `StoreId` | مخزن | خارجي | لا |
-| | `InventoryDocumentId` | مستند المخازن (مثل `TrxInvH`) | خارجي | لا (يُملأ بعد الترحيل) |
+| | `ShiftId` | `PosShift` | منطقي | لا |
+| | `StoreId` | مخزن | خارجي | لا (الدفعة بدون مخزن تفشل) |
+| | `InventoryDocumentId` | `TrxInvH` (صرف المبيعات) | خارجي | لا (يُملأ بعد الترحيل) |
+| | `InventoryReturnDocumentId` | `TrxInvH` (المرتجع) | خارجي | لا |
 | `PosInventoryPostingLine` | `BatchId` | `PosInventoryPostingBatch` | **FK** | نعم |
 | | `ItemId` | صنف | خارجي | نعم |
-| | `StoreId` | مخزن | خارجي | لا |
+| | `VariantId` | SKU | خارجي | لا |
 | | `UnitId` | وحدة | خارجي | لا |
+| | `StoreId` | مخزن | خارجي | لا |
 
-- الرصيد **لا يُحفظ في POS**. POS يجمّع صافي الحركة لكل صنف ومخزن ثم يُرحّل مستنداً واحداً لـ Inventory.
-- `InventoryDocumentId` يربط الدفعة بمستند المخازن بعد نجاح الترحيل.
-- فواتير التدريب (`IsTrainingMode`) لا تُرحّل.
-- **الحالي:** الجدولان وشاشة CRUD لهما موجودة، لكن توليد الدفعات تلقائياً من المبيعات والترحيل الفعلي **غير منفّذ بعد**.
+- حقول الدفعة: `Status` (1 بانتظار الترحيل، 2 مرحّلة، 3 فاشلة، 4 مرحّلة جزئيًا — غير مستخدمة حاليًا)، `FailureReason`، `Attempts` (عدد محاولات الإرسال)، `PostedAt`، `PeriodFrom`/`PeriodTo`.
+- حقول السطر: `SoldQuantity`، `ReturnedQuantity`، `NetQuantity` — **بوحدة السطر**؛ Inventory يحولها للوحدة الأساسية.
+- الرصيد **لا يُحفظ في POS**. يُحسب في Inventory من `TrxInvF`.
+- الربط بالمستند: `TrxInvH.mykey = BatchId` و`TrxInvH.mysource` = `POS-OUT` أو `POS-IN`. إعادة الإرسال لا تكرر المستند.
+- لا يُرحّل: فواتير التدريب، الصنف المفتوح، السطر بدون `UnitId`.
+- إعادة المحاولة: `PosInventoryPostingBatch/Retry?id=` أو `PostShift?shiftId=`.
 
 ## القاعدة المحلية Offline (الديسكتوب)
 
@@ -320,7 +340,7 @@ PosReturnH
 | `sale` | `PosCheckout/SubmitSale` | `PosSaleH` + تفاصيلها |
 | `return` | `PosReturnCheckout/SubmitReturn` | `PosReturnH` + تفاصيلها |
 | `cash_movement` | `PosCashDrawer/AddMovement` | `PosShiftCashMovement` |
-| `approval_log` | `PosCheckout/LogOfflineApprovals` | `PosSaleApproval` |
+| `approval_log` | `PosApproval/LogOfflineApprovals` | `PosSaleApproval` |
 
 - **منع التكرار:** الجهاز يولّد `id` و`ClientLocalId`، وفي السيرفر فهرس فريد على `(TenantId, TerminalId, ClientLocalId)` في `PosSaleH` و`PosReturnH`. إعادة الإرسال بعد انقطاع أو crash آمنة.
 - الفواتير المرفوعة من الجهاز يكون فيها `IsOfflineOrigin = true`. و`PosShift.PendingSyncCount` قد يمنع إغلاق الوردية.

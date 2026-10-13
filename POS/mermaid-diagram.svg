@@ -1,0 +1,304 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1614.254 968" width="1614.254" height="968" style="--bg:#FFFFFF;--fg:#3B3B3B;--line:#3B3B3B;--accent:#005FB8;--muted:#3B3B3BCC;--surface:#F8F8F8;--border:#3B3B3B;background:var(--bg)">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap');
+  text { font-family: 'Inter', system-ui, sans-serif; }
+  .mono { font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', ui-monospace, monospace; }
+  svg {
+    /* Derived from --bg and --fg (overridable via --line, --accent, etc.) */
+    --_text:          var(--fg);
+    --_text-sec:      var(--muted, color-mix(in srgb, var(--fg) 60%, var(--bg)));
+    --_text-muted:    var(--muted, color-mix(in srgb, var(--fg) 40%, var(--bg)));
+    --_text-faint:    color-mix(in srgb, var(--fg) 25%, var(--bg));
+    --_line:          var(--line, color-mix(in srgb, var(--fg) 50%, var(--bg)));
+    --_arrow:         var(--accent, color-mix(in srgb, var(--fg) 85%, var(--bg)));
+    --_node-fill:     var(--surface, color-mix(in srgb, var(--fg) 3%, var(--bg)));
+    --_node-stroke:   var(--border, color-mix(in srgb, var(--fg) 20%, var(--bg)));
+    --_group-fill:    var(--bg);
+    --_group-hdr:     color-mix(in srgb, var(--fg) 5%, var(--bg));
+    --_inner-stroke:  color-mix(in srgb, var(--fg) 12%, var(--bg));
+    --_key-badge:     color-mix(in srgb, var(--fg) 10%, var(--bg));
+  }
+</style>
+<defs>
+</defs>
+<polyline class="er-relationship" data-entity1="InvBrands" data-entity2="InvItems" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="له" points="180,665.5 360.832,665.5 360.832,527.6 430.832,527.6" fill="none" stroke="var(--_line)" stroke-width="1" />
+<polyline class="er-relationship" data-entity1="InvItemGroups" data-entity2="InvItemSubGroups" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="يحتوي" points="180,396 430.832,396" fill="none" stroke="var(--_line)" stroke-width="1" />
+<polyline class="er-relationship" data-entity1="InvItemGroups" data-entity2="InvItems" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="يصنف" points="180,414.66666666666663 190,414.66666666666663 190,505.2 430.832,505.2" fill="none" stroke="var(--_line)" stroke-width="1" />
+<polyline class="er-relationship" data-entity1="InvItemClass" data-entity2="InvItems" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="شجرة تصنيف" points="180,791.5 370.832,791.5 370.832,538.8 430.832,538.8" fill="none" stroke="var(--_line)" stroke-width="1" />
+<polyline class="er-relationship" data-entity1="InvUnits" data-entity2="InvItems" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="وحدة الأساس" points="180,539.5 350.832,539.5 350.832,516.4 430.832,516.4" fill="none" stroke="var(--_line)" stroke-width="1" />
+<polyline class="er-relationship" data-entity1="InvItems" data-entity2="InvItemVariants" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="يولد SKUs" points="570.832,529 600.832,529 600.832,648 905.3153333333333,648" fill="none" stroke="var(--_line)" stroke-width="1" />
+<polyline class="er-relationship" data-entity1="InvDimensions" data-entity2="InvDimensionValues" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="قيم البعد" points="180,68 418.952,68" fill="none" stroke="var(--_line)" stroke-width="1" />
+<polyline class="er-relationship" data-entity1="InvItems" data-entity2="InvItemDimensionSetup" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="إعداد أبعاد الصنف" points="570.832,543 580.832,543 580.832,900 887.292,900" fill="none" stroke="var(--_line)" stroke-width="1" />
+<polyline class="er-relationship" data-entity1="InvItemDimensionSetup" data-entity2="InvItemDimensionAllowedValues" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="القيم المسموحة" points="1052.104,900 1356.09,900" fill="none" stroke="var(--_line)" stroke-width="1" />
+<polyline class="er-relationship" data-entity1="InvItemVariants" data-entity2="InvItemVariantDimensions" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="قيم أبعاد المتغير" points="1045.3153333333335,657.3333333333334 1066.55,657.3333333333334 1066.55,672.9666666666666 1356.09,672.9666666666666" fill="none" stroke="var(--_line)" stroke-width="1" />
+<polyline class="er-relationship" data-entity1="InvItems" data-entity2="InvItemUnits" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="وحدات القياس والعبوات" points="570.832,522 899.698,522" fill="none" stroke="var(--_line)" stroke-width="1" />
+<polyline class="er-relationship" data-entity1="InvItemVariants" data-entity2="InvItemBarcodes" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="باركود المسح للـ POS" points="1045.3153333333335,638.6666666666666 1276.09,638.6666666666666 1276.09,540.6666666666666 1356.09,540.6666666666666" fill="none" stroke="var(--_line)" stroke-width="1" />
+<polyline class="er-relationship" data-entity1="InvItemUnits" data-entity2="InvItemBarcodes" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="وحدة الباركود" points="1039.6979999999999,522 1356.09,522" fill="none" stroke="var(--_line)" stroke-width="1" />
+<polyline class="er-relationship" data-entity1="InvItems" data-entity2="InvItemAlternativeCodes" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="أكواد بديلة وخارجية" points="570.832,508 590.832,508 590.832,270 882.846,270" fill="none" stroke="var(--_line)" stroke-width="1" />
+<polyline class="er-relationship" data-entity1="InvItems" data-entity2="InvItemAlternativeNames" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="أسماء بديلة ولغات" points="570.832,536 590.832,536 590.832,774 882.846,774" fill="none" stroke="var(--_line)" stroke-width="1" />
+<polyline class="er-relationship" data-entity1="InvItems" data-entity2="InvItemPrices" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="أسعار القوائم والعملات" points="570.832,501 580.832,501 580.832,144 882.846,144" fill="none" stroke="var(--_line)" stroke-width="1" />
+<polyline class="er-relationship" data-entity1="InvItems" data-entity2="InvItemSuppliers" data-cardinality1="one" data-cardinality2="zero-many" data-identifying="true" data-label="موردي الصنف" points="570.832,515 600.832,515 600.832,396 882.846,396" fill="none" stroke="var(--_line)" stroke-width="1" />
+<g class="entity" data-id="InvBrands" data-label="InvBrands">
+  <rect x="40" y="637.5" width="140" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="40" y="637.5" width="140" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="110" y="654.5" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvBrands</text>
+  <line x1="40" y1="671.5" x2="180" y2="671.5" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="110" y="682.5" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvItems" data-label="InvItems">
+  <rect x="430.832" y="494" width="140" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="430.832" y="494" width="140" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="500.832" y="511" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvItems</text>
+  <line x1="430.832" y1="528" x2="570.832" y2="528" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="500.832" y="539" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvItemGroups" data-label="InvItemGroups">
+  <rect x="40" y="377.3333333333333" width="140" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="40" y="377.3333333333333" width="140" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="110" y="394.3333333333333" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvItemGroups</text>
+  <line x1="40" y1="411.3333333333333" x2="180" y2="411.3333333333333" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="110" y="422.3333333333333" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvItemSubGroups" data-label="InvItemSubGroups">
+  <rect x="430.832" y="368" width="140" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="430.832" y="368" width="140" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="500.832" y="385" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvItemSubGroups</text>
+  <line x1="430.832" y1="402" x2="570.832" y2="402" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="500.832" y="413" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvItemClass" data-label="InvItemClass">
+  <rect x="40" y="763.5" width="140" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="40" y="763.5" width="140" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="110" y="780.5" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvItemClass</text>
+  <line x1="40" y1="797.5" x2="180" y2="797.5" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="110" y="808.5" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvUnits" data-label="InvUnits">
+  <rect x="40" y="511.5" width="140" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="40" y="511.5" width="140" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="110" y="528.5" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvUnits</text>
+  <line x1="40" y1="545.5" x2="180" y2="545.5" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="110" y="556.5" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvItemVariants" data-label="InvItemVariants">
+  <rect x="905.3153333333333" y="620" width="140" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="905.3153333333333" y="620" width="140" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="975.3153333333333" y="637" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvItemVariants</text>
+  <line x1="905.3153333333333" y1="654" x2="1045.3153333333335" y2="654" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="975.3153333333333" y="665" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvDimensions" data-label="InvDimensions">
+  <rect x="40" y="40" width="140" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="40" y="40" width="140" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="110" y="57" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvDimensions</text>
+  <line x1="40" y1="74" x2="180" y2="74" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="110" y="85" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvDimensionValues" data-label="InvDimensionValues">
+  <rect x="418.952" y="40" width="149.992" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="418.952" y="40" width="149.992" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="493.948" y="57" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvDimensionValues</text>
+  <line x1="418.952" y1="74" x2="568.944" y2="74" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="493.948" y="85" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvItemDimensionSetup" data-label="InvItemDimensionSetup">
+  <rect x="887.292" y="872" width="164.81199999999998" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="887.292" y="872" width="164.81199999999998" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="969.698" y="889" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvItemDimensionSetup</text>
+  <line x1="887.292" y1="906" x2="1052.104" y2="906" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="969.698" y="917" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvItemDimensionAllowedValues" data-label="InvItemDimensionAllowedValues">
+  <rect x="1356.09" y="872" width="218.16399999999996" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="1356.09" y="872" width="218.16399999999996" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="1465.1719999999998" y="889" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvItemDimensionAllowedValues</text>
+  <line x1="1356.09" y1="906" x2="1574.254" y2="906" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="1465.1719999999998" y="917" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvItemVariantDimensions" data-label="InvItemVariantDimensions">
+  <rect x="1356.09" y="644.9666666666666" width="181.11399999999998" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="1356.09" y="644.9666666666666" width="181.11399999999998" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="1446.647" y="661.9666666666666" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvItemVariantDimensions</text>
+  <line x1="1356.09" y1="678.9666666666666" x2="1537.204" y2="678.9666666666666" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="1446.647" y="689.9666666666666" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvItemUnits" data-label="InvItemUnits">
+  <rect x="899.698" y="494" width="140" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="899.698" y="494" width="140" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="969.698" y="511" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvItemUnits</text>
+  <line x1="899.698" y1="528" x2="1039.6979999999999" y2="528" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="969.698" y="539" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvItemBarcodes" data-label="InvItemBarcodes">
+  <rect x="1356.09" y="503.3333333333333" width="140" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="1356.09" y="503.3333333333333" width="140" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="1426.09" y="520.3333333333333" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvItemBarcodes</text>
+  <line x1="1356.09" y1="537.3333333333333" x2="1496.09" y2="537.3333333333333" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="1426.09" y="548.3333333333333" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvItemAlternativeCodes" data-label="InvItemAlternativeCodes">
+  <rect x="882.846" y="242" width="172.22199999999998" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="882.846" y="242" width="172.22199999999998" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="968.957" y="259" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvItemAlternativeCodes</text>
+  <line x1="882.846" y1="276" x2="1055.068" y2="276" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="968.957" y="287" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvItemAlternativeNames" data-label="InvItemAlternativeNames">
+  <rect x="882.846" y="746" width="173.70399999999998" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="882.846" y="746" width="173.70399999999998" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="969.698" y="763" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvItemAlternativeNames</text>
+  <line x1="882.846" y1="780" x2="1056.55" y2="780" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="969.698" y="791" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvItemPrices" data-label="InvItemPrices">
+  <rect x="882.846" y="116" width="140" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="882.846" y="116" width="140" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="952.846" y="133" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvItemPrices</text>
+  <line x1="882.846" y1="150" x2="1022.846" y2="150" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="952.846" y="161" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<g class="entity" data-id="InvItemSuppliers" data-label="InvItemSuppliers">
+  <rect x="882.846" y="368" width="140" height="56" rx="0" ry="0" fill="var(--_node-fill)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <rect x="882.846" y="368" width="140" height="34" rx="0" ry="0" fill="var(--_group-hdr)" stroke="var(--_node-stroke)" stroke-width="1" />
+  <text x="952.846" y="385" text-anchor="middle" font-size="13" font-weight="700" fill="var(--_text)" dy="4.55">InvItemSuppliers</text>
+  <line x1="882.846" y1="402" x2="1022.846" y2="402" stroke="var(--_node-stroke)" stroke-width="0.75" />
+  <text x="952.846" y="413" text-anchor="middle" dy="0.35em" font-size="11" fill="var(--_text-faint)" font-style="italic">(no attributes)</text>
+</g>
+<line x1="184" y1="659.5" x2="184" y2="671.5" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="188" y1="659.5" x2="188" y2="671.5" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="426.832" y1="534.6" x2="414.832" y2="527.6" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="426.832" y1="527.6" x2="414.832" y2="527.6" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="426.832" y1="520.6" x2="414.832" y2="527.6" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="410.832" cy="527.6" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="184" y1="390" x2="184" y2="402" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="188" y1="390" x2="188" y2="402" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="426.832" y1="403" x2="414.832" y2="396" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="426.832" y1="396" x2="414.832" y2="396" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="426.832" y1="389" x2="414.832" y2="396" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="410.832" cy="396" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="184" y1="408.66666666666663" x2="184" y2="420.66666666666663" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="188" y1="408.66666666666663" x2="188" y2="420.66666666666663" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="426.832" y1="512.2" x2="414.832" y2="505.2" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="426.832" y1="505.2" x2="414.832" y2="505.2" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="426.832" y1="498.2" x2="414.832" y2="505.2" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="410.832" cy="505.2" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="184" y1="785.5" x2="184" y2="797.5" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="188" y1="785.5" x2="188" y2="797.5" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="426.832" y1="545.8" x2="414.832" y2="538.8" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="426.832" y1="538.8" x2="414.832" y2="538.8" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="426.832" y1="531.8" x2="414.832" y2="538.8" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="410.832" cy="538.8" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="184" y1="533.5" x2="184" y2="545.5" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="188" y1="533.5" x2="188" y2="545.5" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="426.832" y1="523.4" x2="414.832" y2="516.4" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="426.832" y1="516.4" x2="414.832" y2="516.4" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="426.832" y1="509.4" x2="414.832" y2="516.4" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="410.832" cy="516.4" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="574.832" y1="523" x2="574.832" y2="535" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="578.832" y1="523" x2="578.832" y2="535" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="901.3153333333333" y1="655" x2="889.3153333333333" y2="648" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="901.3153333333333" y1="648" x2="889.3153333333333" y2="648" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="901.3153333333333" y1="641" x2="889.3153333333333" y2="648" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="885.3153333333333" cy="648" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="184" y1="62" x2="184" y2="74" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="188" y1="62" x2="188" y2="74" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="414.952" y1="75" x2="402.952" y2="68" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="414.952" y1="68" x2="402.952" y2="68" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="414.952" y1="61" x2="402.952" y2="68" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="398.952" cy="68" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="574.832" y1="537" x2="574.832" y2="549" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="578.832" y1="537" x2="578.832" y2="549" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="883.292" y1="907" x2="871.292" y2="900" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="883.292" y1="900" x2="871.292" y2="900" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="883.292" y1="893" x2="871.292" y2="900" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="867.292" cy="900" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1056.104" y1="894" x2="1056.104" y2="906" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1060.104" y1="894" x2="1060.104" y2="906" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1352.09" y1="907" x2="1340.09" y2="900" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1352.09" y1="900" x2="1340.09" y2="900" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1352.09" y1="893" x2="1340.09" y2="900" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="1336.09" cy="900" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1049.3153333333335" y1="651.3333333333334" x2="1049.3153333333335" y2="663.3333333333334" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1053.3153333333335" y1="651.3333333333334" x2="1053.3153333333335" y2="663.3333333333334" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1352.09" y1="679.9666666666666" x2="1340.09" y2="672.9666666666666" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1352.09" y1="672.9666666666666" x2="1340.09" y2="672.9666666666666" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1352.09" y1="665.9666666666666" x2="1340.09" y2="672.9666666666666" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="1336.09" cy="672.9666666666666" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="574.832" y1="516" x2="574.832" y2="528" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="578.832" y1="516" x2="578.832" y2="528" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="895.698" y1="529" x2="883.698" y2="522" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="895.698" y1="522" x2="883.698" y2="522" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="895.698" y1="515" x2="883.698" y2="522" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="879.698" cy="522" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1049.3153333333335" y1="632.6666666666666" x2="1049.3153333333335" y2="644.6666666666666" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1053.3153333333335" y1="632.6666666666666" x2="1053.3153333333335" y2="644.6666666666666" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1352.09" y1="547.6666666666666" x2="1340.09" y2="540.6666666666666" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1352.09" y1="540.6666666666666" x2="1340.09" y2="540.6666666666666" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1352.09" y1="533.6666666666666" x2="1340.09" y2="540.6666666666666" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="1336.09" cy="540.6666666666666" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1043.6979999999999" y1="516" x2="1043.6979999999999" y2="528" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1047.6979999999999" y1="516" x2="1047.6979999999999" y2="528" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1352.09" y1="529" x2="1340.09" y2="522" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1352.09" y1="522" x2="1340.09" y2="522" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="1352.09" y1="515" x2="1340.09" y2="522" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="1336.09" cy="522" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="574.832" y1="502" x2="574.832" y2="514" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="578.832" y1="502" x2="578.832" y2="514" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="878.846" y1="277" x2="866.846" y2="270" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="878.846" y1="270" x2="866.846" y2="270" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="878.846" y1="263" x2="866.846" y2="270" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="862.846" cy="270" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="574.832" y1="530" x2="574.832" y2="542" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="578.832" y1="530" x2="578.832" y2="542" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="878.846" y1="781" x2="866.846" y2="774" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="878.846" y1="774" x2="866.846" y2="774" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="878.846" y1="767" x2="866.846" y2="774" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="862.846" cy="774" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="574.832" y1="495" x2="574.832" y2="507" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="578.832" y1="495" x2="578.832" y2="507" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="878.846" y1="151" x2="866.846" y2="144" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="878.846" y1="144" x2="866.846" y2="144" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="878.846" y1="137" x2="866.846" y2="144" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="862.846" cy="144" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="574.832" y1="509" x2="574.832" y2="521" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="578.832" y1="509" x2="578.832" y2="521" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="878.846" y1="403" x2="866.846" y2="396" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="878.846" y1="396" x2="866.846" y2="396" stroke="var(--_line)" stroke-width="1.25" />
+<line x1="878.846" y1="389" x2="866.846" y2="396" stroke="var(--_line)" stroke-width="1.25" />
+<circle cx="862.846" cy="396" r="4" fill="var(--bg)" stroke="var(--_line)" stroke-width="1.25" />
+<rect x="350.067" y="641.816" width="21.53" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="360.832" y="651.966" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">له</text>
+<rect x="285.741" y="385.85" width="39.35" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="305.416" y="396" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">يحتوي</text>
+<rect x="243.4443333333333" y="495.05" width="33.41" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="260.1493333333333" y="505.2" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">يصنف</text>
+<rect x="338.38599999999997" y="720.416" width="64.89200000000001" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="370.832" y="730.566" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">شجرة تصنيف</text>
+<rect x="281.55" y="529.35" width="70.83200000000001" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="316.966" y="539.5" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">وحدة الأساس</text>
+<rect x="647.3156666666666" y="637.85" width="62.516000000000005" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="678.5736666666667" y="648" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">يولد SKUs</text>
+<rect x="270" y="57.85" width="58.952000000000005" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="299.476" y="68" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">قيم البعد</text>
+<rect x="529.675" y="859.58" width="102.31400000000002" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="580.832" y="869.73" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">إعداد أبعاد الصنف</text>
+<rect x="1159.771" y="889.85" width="88.65200000000002" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="1204.097" y="900" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">القيم المسموحة</text>
+<rect x="1141.729" y="662.8166666666666" width="102.31400000000002" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="1192.886" y="672.9666666666666" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">قيم أبعاد المتغير</text>
+<rect x="672.228" y="511.85" width="126.07400000000003" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="735.265" y="522" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">وحدات القياس والعبوات</text>
+<rect x="1189.9326666666666" y="628.5166666666667" width="119.54" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="1249.7026666666666" y="638.6666666666666" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">باركود المسح للـ POS</text>
+<rect x="1156.5379999999998" y="511.85" width="82.71200000000002" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="1197.8939999999998" y="522" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">وحدة الباركود</text>
+<rect x="550.742" y="259.85" width="114.19400000000003" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="607.8389999999999" y="270" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">أكواد بديلة وخارجية</text>
+<rect x="556.6819999999999" y="763.85" width="102.31400000000002" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="607.8389999999999" y="774" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">أسماء بديلة ولغات</text>
+<rect x="514.825" y="166.343" width="132.014" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="580.832" y="176.493" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">أسعار القوائم والعملات</text>
+<rect x="631.9229999999999" y="385.85" width="70.83200000000001" height="20.3" rx="2" ry="2" fill="var(--bg)" stroke="var(--_inner-stroke)" stroke-width="0.5" />
+<text x="667.3389999999999" y="396" text-anchor="middle" font-size="11" font-weight="400" fill="var(--_text-muted)" dy="3.8499999999999996">موردي الصنف</text>
+</svg>

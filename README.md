@@ -16,4 +16,14 @@
 - [نشر نسخة الديسكتوب](POS/POS-DESKTOP-PUBLISH.md): نشر نسخة للتجربة على بيئة Dev.
 - [مقترح تعديلات Inventory](POS/INVENTORY-PROPOSAL-FOR-POS.md): مواصفات مطلوبة من فريق Inventory.
 
+## المخازن (Inventory)
+
+### لفريق قواعد البيانات
+- [دليل جداول تكويد الصنف](Inventory/INVENTORY-ITEM-TABLES-DB-GUIDE.md): دور كل جدول، العلاقات، الحقول المهمة، واستعلامات جاهزة.
+
+### للمبرمجين
+- [تصميم بيانات الصنف](Inventory/INVENTORY-ITEM-MASTER-DESIGN.md): الأكواد، الوحدات، الـ Variants، الباركود، وربط الحركات.
+- [قاموس حقول الصنف](Inventory/Inventory-Item-Fields-Dictionary.xlsx): حقول شاشات الصنف.
+- [مركز الأصناف](Inventory/INVENTORY-ITEM-CENTER.md): الشاشة الجديدة، قواعد السعر والوحدات، الـ API، الصلاحيات، والفجوات.
+
 </div>

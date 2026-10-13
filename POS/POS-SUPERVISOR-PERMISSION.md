@@ -125,6 +125,39 @@ WHERE "Name" ILIKE '%PosSupervisor%';
 
 ---
 
+## نقاط الاعتماد (API) وصلاحية الكاشير
+
+كنترولر مستقل `PosApproval` (`PosApprovalAppService`) بدل `PosCheckout`، كلها POST:
+
+| الإجراء | الوظيفة |
+|---|---|
+| `PosApproval/GetApprovers` | قائمة مشرفي فرع نقطة البيع (مع hash الرمز للتحقق أوفلاين) |
+| `PosApproval/VerifyApproval` | التحقق من رمز المشرف وتسجيل الموافقة |
+| `PosApproval/LogOfflineApprovals` | رفع الموافقات التي تمت بدون اتصال (من الـ outbox) |
+
+- الفلتر العام (`TabEntityAuthorizationFilter`) أصبح مطابقًا لـ HR تمامًا (بلا قوائم استثناء). الاستثناء يتم بالـ attribute `[TabSkipEntityAuthorization]` على الخدمة نفسها (موجود في `TABMS.POS.Application.Contracts/Authorization`):
+  - `PosApprovalAppService` على مستوى الكلاس (لا يُطلب `PosApproval.Create`).
+  - `PosSupervisorAppService`: `SetMyPin` و`GetMyPinStatus` و`SetMyOfflinePin` و`GetMyOfflinePinStatus` و`GetMyOfflineCredential`.
+  - `PosPolicyAppService.GetEffective`.
+  - الدخول ما زال مطلوبًا لهذه الأكشنات (`[Authorize]` على `BaseAppService`)؛ الـ attribute يتجاوز فحص صلاحية الكيان فقط.
+- الكاشير (صاحب التوكن) يحتاج صلاحية **العملية نفسها** حسب نوع الاعتماد:
+
+| نوع الاعتماد | الصلاحية المطلوبة من الكاشير (أي واحدة) |
+|---|---|
+| CashOut (10) | `PosCashDrawer.Create` |
+| CashDifference (6) | `PosCashDrawer.Create` أو `PosShift.Create` |
+| ReturnOverride (5) | `PosReturnCheckout.Create` |
+| Other (99) — يُستخدم للإيداع النقدي | `PosCheckout.Create` أو `PosCashDrawer.Create` |
+| باقي الأنواع (خصم، سعر، إلغاء، حذف/تعديل سطر، إعادة طباعة، حذف معلّقة، رصيد سالب) | `PosCheckout.Create` |
+
+- `GetApprovers` يكفيه أي صلاحية من الجدول. `LogOfflineApprovals` يفحص كل الأنواع في الدفعة قبل الحفظ.
+- الرفض: HTTP 403 برسالة «حسابك ليس لديه صلاحية تنفيذ هذه العملية (اسم الصلاحية)» وكود `POS:PermissionRequired`.
+- التحقق من **المشرف** لم يتغير: PIN + الفرع + `PosSupervisor.Create` + القفل بعد 5 محاولات + السجل.
+- الأسماء الكاملة تبدأ بـ `Adminstration.Entities.` (مثل `Adminstration.Entities.PosCashDrawer.Create`). تُمنح بإضافة الكيان إلى `RelatedEntities` لقائمة `PosCashier` في Pages-Settings ثم إعادة حفظ صلاحية الدور (Access + Insert).
+- الديسكتوب: عند 403 من `GetApprovers` تُمسح قائمة المشرفين المحفوظة وتظهر رسالة في نافذة الاعتماد، وعند 401 تبقى القائمة مع تنبيه أنها غير مؤكدة.
+
+---
+
 ## ملاحظات
 
 - تعيين PIN (`SetMyPin`) أصبح متاحًا لأي مستخدم مسجّل دخولًا؛ **الظهور في قائمة الاعتماد** ما زال يتطلب الصلاحية أعلاه.
