@@ -226,6 +226,10 @@ Unique: `(itemid, tounitid)` — الوحدة لا تتكرر لنفس الصن�
 ### 5.2 `"InvDimensions"` و `"InvDimensionValues"` — الأبعاد وقيمها
 - `InvDimensions`: نوع البعد (`dimensioncode` فريد لكل tenant): لون، مقاس.
 - `InvDimensionValues`: القيم (`dimensionid` FK، `valuecode` فريد داخل البعد، `sortorder`): أحمر، أزرق / S, M, L.
+- الإدارة: مركز الأصناف ← زر «الأبعاد» (`InvItemCenter/GetDimensions`، `SaveDimension`، `SaveDimensionValue`، `ReorderDimensionValues`، `DeleteDimension`، `DeleteDimensionValue`).
+- `dimensioncode` و`valuecode` يدخلوا في `combinationkey` للـ SKU، فالكود المستخدم في SKUs مقفول. الاسم يتغير عادي، لكن أسماء الـ SKUs القديمة تفضل زي ما اتولدت.
+- الحذف: البعد لو مش مستخدم في أي صنف، والقيمة لو مش مستخدمة في أي SKU. غير كده يتوقف (`notactive`).
+- الموقوف لا يظهر عند إعداد صنف جديد، ولا يتولد منه SKU جديد، ويفضل شغال في الـ SKUs الحالية.
 
 ### 5.3 `"InvItemDimensionSetup"` — أبعاد الصنف
 أي أبعاد تنطبق على الصنف. `itemid` FK، `dimensionid` FK، `isrequired`، `sortorder`. Unique `(itemid, dimensionid)`.
