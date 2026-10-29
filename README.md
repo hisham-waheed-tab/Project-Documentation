@@ -16,6 +16,12 @@
 - [نشر نسخة الديسكتوب](POS/POS-DESKTOP-PUBLISH.md): نشر نسخة للتجربة على بيئة Dev.
 - [مقترح تعديلات Inventory](POS/INVENTORY-PROPOSAL-FOR-POS.md): مواصفات مطلوبة من فريق Inventory.
 
+## لوحات المعلومات (Desktop Dashboard)
+
+### للدعم الفني وتشغيل العملاء
+- [تشغيل لوحات المعلومات لعميل ديسكتوب](DesktopDashboard/DESKTOP-DASHBOARD-SUPPORT.md): من قاعدة العميل لحد فتح اللوحات والصلاحيات.
+- [سكريبت الـ Views](DesktopDashboard/desktop-dashboard-views.sql): يُشغَّل على قاعدة بيانات العميل.
+
 ## المخازن (Inventory)
 
 ### لفريق قواعد البيانات
